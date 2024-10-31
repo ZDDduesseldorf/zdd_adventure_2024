@@ -13,7 +13,11 @@ class ToiletCellar(Room):
         return user_items
     
 class GSITRoom(Room):
-    
+
+    def __init__(self, name, description, items=None):
+        super().__init__(name, description, items)
+        self.completed_arcade = False
+
     def run_story(self, user_items):
         self.introduction()
 
@@ -36,8 +40,7 @@ class GSITRoom(Room):
         print("\nFinally, at the end of your way the is a double door. You take one last look at the hallway, but you see nothing and no one")
         time.sleep(5)
         print("You pull yourself together and enter the gsit room...")
-        time.sleep(1)
-
+        time.sleep(3)
 ## ----------------------------------------------------------------
 ## List here all rooms
 
