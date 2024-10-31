@@ -20,6 +20,7 @@ class GSITRoom(Room):
 
     def run_story(self, user_items):
         self.introduction()
+        self.basecamp()
 
     def introduction(self):
         print("You find yourself marching through the long corridor, hearing nothing but your footsteps...")
@@ -41,6 +42,22 @@ class GSITRoom(Room):
         time.sleep(5)
         print("You pull yourself together and enter the gsit room...")
         time.sleep(3)
+    
+    def basecamp(self):
+            print("You look around the room and spot an arcade game and \na person reading 'Being and Nothingness' by Jean-Paul Sartre in a chair by the window.")
+            time.sleep(1)
+            choice=input("Would you like to...\n>> talk to the person [t]\n>> approach the arcade[a]\n>> escape the room [e]\n\n>>")
+            while choice not in ['t', 'a', 'e']:
+                print(f"Invalid input '{choice}." )
+                choice=input("You can...\n>> talk to the person [t]\n>> approach the arcade [a]\n>> lescape the room [e]\n>>")
+            if choice == 't':
+                return self.start_conversation()
+            elif choice == 'a':
+                return self.arcade()
+            else:
+                return self.decline_escape()
+
+
 ## ----------------------------------------------------------------
 ## List here all rooms
 
