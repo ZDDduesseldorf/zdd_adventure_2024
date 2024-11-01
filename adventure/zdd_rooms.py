@@ -109,6 +109,7 @@ class GSITRoom(Room):
                 print("Congratulations! You have shown yourself to be a real philosopher!")
                 self.completed_arcade = True
                 break
+            time.sleep(random.randint(5,8))
             print(f"\nWord: {word}\n")
             explain = "Press enter to catch the word!\n"
             start_time = time.time()
@@ -131,11 +132,10 @@ class GSITRoom(Room):
             else: 
                 print(f"Too slow! You missed the word by {needed_time - 3:.2f} seconds!") 
             print("Prepare for the next word...")
-            time.sleep(random.randint(5,8))
 
         if self.completed_arcade:
             # Here, the player wins an Apple Watch -> add to inventory
-            pass
+            self.conversation()
         else:
             print("You lost! You return to the main menu.")
         return self.main_menu()
