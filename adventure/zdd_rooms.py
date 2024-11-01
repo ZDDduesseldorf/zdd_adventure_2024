@@ -20,7 +20,7 @@ class GSITRoom(Room):
 
     def run_story(self, user_items):
         self.introduction()
-        self.basecamp()
+        self.main_menu()
 
     def introduction(self):
         """Starts story arc of the GSIT-Room"""
@@ -43,7 +43,7 @@ class GSITRoom(Room):
         print("You spot an arcade game and a person reading 'Being and Nothingness' \nby Jean-Paul Sartre in a chair by the window.\n")
         time.sleep(3)
     
-    def basecamp(self):
+    def main_menu(self):
         """The 'lobby' of the GSIT-Room"""
 
         request = "Would you like to...\n>> talk to the person [t]\n>> approach the arcade[a]\n>> escape the room [e]\n\n>>"
@@ -74,7 +74,7 @@ class GSITRoom(Room):
             print("\n'Let the games begin!'")
             return self.arcade()
         print("\n'Too bad! Maybe you need some time to think about it again...'\n")
-        return self.basecamp()
+        return self.main_menu()
 
 
     def handle_input(self, request: str, allowed_inputs: list) -> str:
