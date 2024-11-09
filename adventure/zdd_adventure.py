@@ -34,6 +34,9 @@ class ZDDAdventure:
 
         # Define rooms in each floor
         analog_book = Item("old book", "a real book made of paper", movable=True)
+        # Add new item called flashlight
+        flashlight = Item("flashlight", "A small flashlight. It might be useful in dark places.", movable=True)
+
         archive_room = Room("archive", "Old records and dusty books everywhere.",
                             analog_book)
         cellar.add_room("archive", archive_room)
@@ -44,6 +47,9 @@ class ZDDAdventure:
 
         reception = Room("reception", "You see a welcoming desk and a receptionist.")
         ground_floor.add_room("reception", reception)
+
+        # Add flashlight to initial inventory
+        self.items.append(flashlight)
 
         #... Add other rooms ...
 
