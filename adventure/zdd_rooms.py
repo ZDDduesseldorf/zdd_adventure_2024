@@ -18,7 +18,7 @@ class GSITRoom(Room):
     def __init__(self, name, description, items=None):
         super().__init__(name, description, items)
         self.completed_arcade = False
-        self.tried_escape = False
+        self.introduced = False
         self.arcade_points = 0
         self.player_name = None
         self.ethical_words = ["Data Protection", "Categorical imperative", "Moral Agent", "Transparancy", 
@@ -53,7 +53,9 @@ class GSITRoom(Room):
     
     def main_menu(self):
         """The 'lobby' of the GSIT-Room"""
-
+        
+        if self.completed_arcade:
+            return
         request = "Would you like to...\n>> talk to the person [t]\n>> approach the arcade [a]\n>> escape the room [e]\n\n>>"
         choice = self.handle_input(request=request, allowed_inputs=['t', 'a', 'e'])
         if choice == 't':
@@ -63,6 +65,8 @@ class GSITRoom(Room):
         return self.try_escape()
     
     def arcade_introduction(self):
+        """Introductory-Sequence of the arcade game"""
+
         print("Welcome to...")
         self.show_arcade_logo()
         time.sleep(2)
@@ -84,7 +88,7 @@ class GSITRoom(Room):
     def arcade(self):
         """The arcade game of the GSIT-Room
         
-        The player has to catch ethical words to win the game.
+        The player has to catch positively-connotated ethical expressions to win the game.
         """
         num_ethical_words = random.randint(5,7)
         num_unethical_words = 15 - num_ethical_words
@@ -132,7 +136,9 @@ class GSITRoom(Room):
             print("You lost! You return to the main menu.")
         return self.main_menu()
 
-    def try_escape(self) -> str:
+    def try_escape(self):
+        """The player tries to escape the GSIT-Room"""
+
         if self.tried_escape:
             print("You already tried to escape once. Maybe you should try something else.")
             return self.main_menu()
@@ -144,23 +150,35 @@ class GSITRoom(Room):
         return self.main_menu()
 
     def conversation(self):
-        if not self.tried_escape and not self.completed_arcade:
-            player_name = input("\n'Hello, my dear adventurer! Welcome to the GSIT room! May I know your name, brave soul?'\n>>")
-            self.player_name = player_name
-            print(f"\n'Hmmmhmm...I once knew someone named {player_name}. Unfortunately, that poor soul never made it out of here.'")
-            print("In order to continue your quest, you have to prove to me both your wisdom and your technical knowledge...")
-            print("I challenge you to win the arcade game and prove yourself worthy!'")
-            return self.propose_challenge()
-        if not self.completed_arcade:
+        """Conversation with the host in the GSIT room"""
+
+        if not self.introduced:
+            return self.introduction()
+        #If player has not yet completed the arcade or has already talked to the person
+        elif not self.completed_arcade or self.introduced:
             request=f"'Welcome back, {self.player_name}! Are you ready for a test of your ethics skills?' [y/n]\n>>"
             choice = self.handle_input(request=request, allowed_inputs=['y','n'])
             if choice == 'n':
                 print("\n'You will soon realize that there is no escape. The game is the only way back to reality!'\n")
                 return self.propose_challenge()
             return self.arcade_introduction()
+        #If player has completed the arcade
         self.print_end_sequence()
+
+    def introduction(self):
+        """First introduction to the host of the GSIT room"""
+
+        player_name = input("\n'Hello, my dear adventurer! Welcome to the GSIT room! May I know your name, brave soul?'\n>>")
+        self.player_name = player_name
+        print(f"\n'Hmmmhmm...I once knew someone named {player_name}. Unfortunately, that poor soul never made it out of here.")
+        print("In order to continue your quest, you have to prove to me both your wisdom and your technical knowledge...")
+        print("I challenge you to win the arcade game and prove yourself worthy!'")
+        self.introduced = True
+        return self.propose_challenge()
         
     def print_end_sequence(self):
+        '''End sequence of the GSIT room'''
+
         print("\n'Well done! You have proven yourself to be a true philosopher!' the reading persons says.\n")
         print("'However, this is not the end. In order to leave this place, you have to demonstrate your technical skills as well.")
         print("Unless you can prove to me that fall detection is possible using technical devices, you will be stuck here forever!'")
@@ -184,7 +202,7 @@ class GSITRoom(Room):
         print("You are now back in the hallway of the third floor, ready to continue your quest.")
 
     def propose_challenge(self):
-        request = "'Do you have the courage to accept the challenge and prove your worth? [y/n]\n>>"
+        request = "Do you have the courage to accept the challenge and prove your worth? [y/n]\n>>"
         choice = self.handle_input(request=request, allowed_inputs=['y','n'])
         if choice == 'y':
             print("\n'Let the games begin!'")
