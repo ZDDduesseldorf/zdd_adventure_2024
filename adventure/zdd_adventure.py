@@ -39,6 +39,9 @@ class ZDDAdventure:
         cellar.add_room("archive", archive_room)
         cellar.add_room("toilet", ALL_ROOMS["toilet_cellar"])
 
+        dark_room = ALL_ROOMS["dark_room"]  # Custom dark room from zdd_rooms.py
+        cellar.add_room("dark_room", dark_room)
+
         reception = Room("reception", "You see a welcoming desk and a receptionist.")
         ground_floor.add_room("reception", reception)
 
