@@ -20,6 +20,7 @@ class GSITRoom(Room):
         self.completed_arcade = False
         self.introduced = False
         self.arcade_points = 0
+        self.tried_escape = False
         self.player_name = None
         self.ethical_words = ["Data Protection", "Categorical imperative", "Moral Agent", "Transparancy", 
                               "Fairness", "Inclusivity", "Privacy by Design", "Autonomy", "Honesty", 
@@ -34,10 +35,10 @@ class GSITRoom(Room):
                                ]
 
     def run_story(self, user_items):
-        self.introduction()
+        self.introductory_sequence()
         self.main_menu()
 
-    def introduction(self):
+    def introductory_sequence(self):
         """Starts story arc of the GSIT-Room"""
 
         print("You find yourself marching through the long corridor, hearing nothing but your footsteps...")
@@ -53,7 +54,7 @@ class GSITRoom(Room):
     
     def main_menu(self):
         """The 'lobby' of the GSIT-Room"""
-        
+
         if self.completed_arcade:
             return
         request = "Would you like to...\n>> talk to the person [t]\n>> approach the arcade [a]\n>> escape the room [e]\n\n>>"
@@ -73,10 +74,10 @@ class GSITRoom(Room):
         print("Ethical Catch!")
         time.sleep(2)
         print("The game is simple: over the course of the game, words will appear on the screen.")
-        print("Your task is to catch 5 ethical words by pressing enter.")
-        print("If you see an unethical word, press 'no' to avoid catching it.")
-        print("You have 3 seconds to catch each ethical word.")
-        print("But be careful! Catching unethical words will cost you points!")
+        print("Your task is to catch 5 ethical terms by pressing enter.")
+        print("If you see an unethical term, press 'no' to avoid catching it.")
+        print("You have 3 seconds to catch each ethical term.")
+        print("But be careful! Catching unethical terms will cost you points!")
         request="Are you ready to play? [y/n]\n>>"
         choice = self.handle_input(request=request, allowed_inputs=['y','n'])
         if choice == 'n':
@@ -107,31 +108,32 @@ class GSITRoom(Room):
                 break
             time.sleep(random.randint(3,5))
             print(f"\nWord: {word}\n")
-            explain = "Press enter to catch the word!\n"
+            explain = "Press enter to catch the term!\n"
             start_time = time.time()
             choice = self.handle_input(request=explain, allowed_inputs=['', 'no'])
             end_time = time.time()
             needed_time = end_time - start_time
             if word in self.ethical_words and needed_time <= 3 and choice == '':
-                print("You caught an ethical word!")
+                print("You caught an ethical term!")
                 self.arcade_points += 1
-                print(f"You currently have {self.arcade_points} points")
+                print(f"You currently have {self.arcade_points} point(s)")
             elif word in self.unethical_words and choice == '':
-                print("You caught an unethical word!")
+                print("You caught an unethical term!")
                 if self.arcade_points == 0:
                     print("You can't lose any points yet!")
                 else:
                     self.arcade_points -= 1
-                    print(f"You lost a point! You currently have {self.arcade_points} points")
+                    print(f"You lost a point! You currently have {self.arcade_points} point(s)")
             elif word in self.unethical_words and choice == 'no':
-                print("Correct! Not an ethical word!")
+                print("Correct! Not an ethical term!")
             else: 
-                print(f"Too slow! You missed the word by {needed_time - 3:.2f} seconds!") 
+                print(f"Too slow! You missed the term by {needed_time - 3:.2f} seconds!") 
             print("Prepare for the next word...")
 
         if self.completed_arcade:
             # Here, the player wins an Apple Watch -> add to inventory
-            self.conversation()
+            time.sleep(6)
+            self.print_end_sequence()
         else:
             print("You lost! You return to the main menu.")
         return self.main_menu()
@@ -153,19 +155,17 @@ class GSITRoom(Room):
         """Conversation with the host in the GSIT room"""
 
         if not self.introduced:
-            return self.introduction()
+            return self.introductory_talk()
         #If player has not yet completed the arcade or has already talked to the person
-        elif not self.completed_arcade or self.introduced:
+        if not self.completed_arcade or self.introduced:
             request=f"'Welcome back, {self.player_name}! Are you ready for a test of your ethics skills?' [y/n]\n>>"
             choice = self.handle_input(request=request, allowed_inputs=['y','n'])
             if choice == 'n':
                 print("\n'You will soon realize that there is no escape. The game is the only way back to reality!'\n")
                 return self.propose_challenge()
             return self.arcade_introduction()
-        #If player has completed the arcade
-        self.print_end_sequence()
 
-    def introduction(self):
+    def introductory_talk(self):
         """First introduction to the host of the GSIT room"""
 
         player_name = input("\n'Hello, my dear adventurer! Welcome to the GSIT room! May I know your name, brave soul?'\n>>")
@@ -182,7 +182,7 @@ class GSITRoom(Room):
         print("\n'Well done! You have proven yourself to be a true philosopher!' the reading persons says.\n")
         print("'However, this is not the end. In order to leave this place, you have to demonstrate your technical skills as well.")
         print("Unless you can prove to me that fall detection is possible using technical devices, you will be stuck here forever!'")
-        print("The person continues reading, not paying any further attention to you...")
+        print("The person continues reading, not paying any further attention to you...\n")
         print("Being a wise person as you have shown yourself to be, you remember the Apple Watch around you wrist.")
         print("'I have faith in technolgy' you think!")
         print("You look around the room and see a sign on the wall:")
@@ -194,12 +194,11 @@ class GSITRoom(Room):
         print("You *immediately* get knocked out...")
         print("Your mind drifts through spheres again, faster and faster, leaving your unconscious body behind...")
         print("In the distance you hear a sirene, a door getting kicked in and a paramedic shouting 'Doctor, we've found the person!'")
-        print("She and the other paramedics put you on a stretcher and carry your body out of the room and into the hallway...")
-        print("They give you a shot which brings you back to consciousness...")
+        print("She and the other doctors come towards you and give you a shot which brings you back to consciousness...")
         print("You realize that you were in fact not hurt at all, but that your mind was cut off from your body.")
         print("Hadn't it been for the fall detection, you would have never woken up again.")
         print("Your faith in technology has proven to be well placed.")
-        print("You are now back in the hallway of the third floor, ready to continue your quest.")
+        print("'Congratulations! You have proven your worth!' the person says, smiling, yet not looking up from the book.")
 
     def propose_challenge(self):
         request = "Do you have the courage to accept the challenge and prove your worth? [y/n]\n>>"
