@@ -20,6 +20,7 @@ class GSITRoom(Room):
         self.completed_arcade = False
         self.tried_escape = False
         self.arcade_points = 0
+        self.player_name = None
         self.ethical_words = ["Data Protection", "Categorical imperative", "Moral Agent", "Transparancy", 
                               "Fairness", "Inclusivity", "Privacy by Design", "Autonomy", "Honesty", 
                               "User Empowerment", "Respect", "Empathy", "Ethical Alignment", "Data Sovereignty",
@@ -41,23 +42,14 @@ class GSITRoom(Room):
 
         print("You find yourself marching through the long corridor, hearing nothing but your footsteps...")
         for i in range(3):
-            time.sleep(1)
             print("...Tap tap...")
-        time.sleep(2)
-        print("...hmmhmmmm...")
-        time.sleep(1)
+        print("\n...hmmhmmmm...")
         print("\nWhat was that??\n")
-        time.sleep(3)
         for i in range(3):
-            time.sleep(0.5)
             print("...Tap tap...")
-        time.sleep(2)
         print("Finally you find yourself in front of a door and enter the gsit room...\n")
-        time.sleep(3)
         print("The room is lit by a dim light, the walls are covered with book shelfs and the floor is covered with a thick carpet.")
-        time.sleep(3)
         print("You spot an arcade game and a person reading 'Being and Nothingness' \nby Jean-Paul Sartre in a chair by the fireplace.\n")
-        time.sleep(3)
     
     def main_menu(self):
         """The 'lobby' of the GSIT-Room"""
@@ -145,13 +137,8 @@ class GSITRoom(Room):
             print("You already tried to escape once. Maybe you should try something else.")
             return self.main_menu()
         print("You run towards the door")
-        time.sleep(1)
-        print("In your head you hear the hmmhmmm getting louder and louder")
-        time.sleep(2)
         print("Before you can reach the door, you already passed out, your mind drifting infinitely fast through neverending spheres...")
-        time.sleep(2)
         print("'There is no escaping this thought experiment! The Arcade is your way out!' you hear a voice in the distance.")
-        time.sleep(2)
         print("You wake up in the middle of the room, confused and a little dizzy.\n")
         self.tried_escape = True
         return self.main_menu()
@@ -159,14 +146,13 @@ class GSITRoom(Room):
     def conversation(self):
         if not self.tried_escape and not self.completed_arcade:
             player_name = input("\n'Hello, my dear adventurer! Welcome to the GSIT room! May I know your name, brave soul?'\n>>")
-            print(f"\n'Hmmmhmm...I once knew someone named {player_name}. Unfortunately, that poor soul never made it out of here.")
-            time.sleep(3)
+            self.player_name = player_name
+            print(f"\n'Hmmmhmm...I once knew someone named {player_name}. Unfortunately, that poor soul never made it out of here.'")
             print("In order to continue your quest, you have to prove to me both your wisdom and your technical knowledge...")
-            time.sleep(3)
             print("I challenge you to win the arcade game and prove yourself worthy!'")
             return self.propose_challenge()
         if not self.completed_arcade:
-            request="'Welcome back! Are you ready for a test of your ethics skills?' [y/n]\n>>"
+            request=f"'Welcome back, {self.player_name}! Are you ready for a test of your ethics skills?' [y/n]\n>>"
             choice = self.handle_input(request=request, allowed_inputs=['y','n'])
             if choice == 'n':
                 print("\n'You will soon realize that there is no escape. The game is the only way back to reality!'\n")
@@ -182,12 +168,10 @@ class GSITRoom(Room):
         print("Being a wise person as you have shown yourself to be, you remember the Apple Watch around you wrist.")
         print("'I have faith in technolgy' you think!")
         print("You look around the room and see a sign on the wall:")
-        print("\tFace me and I shall set you free!\n\tBut beware, if you fail, you will never wake up!\n")
+        print("\n\tFace me and I shall set you free!\n\tBut beware, if you fail, you will never wake up!\n")
         print("You feel frightened, knowing you will never leave this room if your Smartwatch fails you.")
         print("You decide to put your faith in technology and step in front of the sign, wondering what will happen next...")
-        time.sleep(3)
-        print("KNOCK")
-        time.sleep(2)
+        print("\nKNOCK\n")
         print("Before you could even hear the sound, you feel a strong force pushing you over.")
         print("You *immediately* get knocked out...")
         print("Your mind drifts through spheres again, faster and faster, leaving your unconscious body behind...")
@@ -211,13 +195,13 @@ class GSITRoom(Room):
     def handle_input(self, request: str, allowed_inputs: list) -> str:
         """
         Handles user input and ensures it is within the allowed inputs.
+        ---------------------------------------------------------------
 
-        Parameters
-        ----------
-        request (str): What the user will react to
+        request (str): What the user will react to\n
         allowed_inputs (list): A list of valid input options.
 
-        Returns:
+        Returns
+        -------
         str: A valid input from the allowed inputs.
         """
         
