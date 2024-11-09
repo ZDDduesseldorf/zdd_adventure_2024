@@ -101,7 +101,7 @@ class GSITRoom(Room):
                 print("Congratulations! You have shown yourself to be a real philosopher!")
                 self.completed_arcade = True
                 break
-            time.sleep(random.randint(5,8))
+            time.sleep(random.randint(3,5))
             print(f"\nWord: {word}\n")
             explain = "Press enter to catch the word!\n"
             start_time = time.time()
