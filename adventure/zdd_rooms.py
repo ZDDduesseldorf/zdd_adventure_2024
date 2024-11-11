@@ -13,13 +13,13 @@ class ToiletCellar(Room):
     
     
 class Pigsty(Room):
-    def __init__(self, name, description):
+    def __init__(self, name, description, items):
         self.brother_saved = False
-        super().__init__(name, description)
+        super().__init__(name, description, items)
         
     def show_items(self, user_items):
         if not self.brother_saved:
-            print("There is nothing of particular interest...")
+            print("There are no oates, they've been eaten...")
             return user_items
         return super().show_items(user_items)
 
