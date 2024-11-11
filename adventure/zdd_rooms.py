@@ -1,6 +1,5 @@
 """This is to keep all special rooms of the ZDD."""
-from main_classes import Room
-
+from main_classes import Room, Item
 
 class ToiletCellar(Room):
     def run_story(self, user_items):
@@ -16,7 +15,7 @@ class ToiletCellar(Room):
 ## List here all rooms
 
 toilet_cellar = ToiletCellar("toilet", "Yes, even the cellar has a toilet.")
-
+oats = Item("oats", "some oats")
 # Add your room instance here, similar to the example below:
 # my_room = MyRoom("room_name", "room_description")
 
