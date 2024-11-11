@@ -17,6 +17,13 @@ class Pigsty(Room):
         self.brother_saved = False
         super().__init__(name, description)
         
+    def show_items(self, user_items):
+        if not self.brother_saved:
+            print("There is nothing of particular interest...")
+            return user_items
+        return super().show_items(user_items)
+
+        
     def run_story(self, user_items):
         from pigsty_dialogue import pig_dialogue, dialogue_options, additonal_dialogue
         inp_lst = []
