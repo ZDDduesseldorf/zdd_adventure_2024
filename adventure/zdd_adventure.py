@@ -39,7 +39,6 @@ class ZDDAdventure:
         cellar.add_room("archive", archive_room)
         cellar.add_room("toilet", ALL_ROOMS["toilet_cellar"])
         
-        oats = Item("oats", "some oats")
         cellar.add_room("pigsty", ALL_ROOMS["pigsty"])
 
         reception = Room("reception", "You see a welcoming desk and a receptionist.")

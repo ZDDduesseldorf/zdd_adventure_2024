@@ -62,7 +62,7 @@ class Pigsty(Room):
 
 toilet_cellar = ToiletCellar("toilet", "Yes, even the cellar has a toilet.")
 oats = Item("oats", "some oats")
-pigsty = Pigsty("pigsty", "Why does the ZDD have a pigsty???")
+pigsty = Pigsty("pigsty", "Why does the ZDD have a pigsty???", oats)
 
 # Add your room instance here, similar to the example below:
 # my_room = MyRoom("room_name", "room_description")
