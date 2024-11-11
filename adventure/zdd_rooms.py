@@ -16,7 +16,6 @@ class ToiletCellar(Room):
 class GSITRoom(Room):
 
     def __init__(self, name, description, items=None):
-        super().__init__(name, description, items)
         self.completed_arcade = False
         self.introduced = False
         self.arcade_points = 0
@@ -33,10 +32,12 @@ class GSITRoom(Room):
                                 "Data Theft", "Forced Consent", "Data Monopoly", "Privacy Trade-Offs",
                                 "Unauthorized Tracking", "Privacy Evasion",
                                ]
+        super().__init__(name, description, items)
 
     def run_story(self, user_items):
         self.introductory_sequence()
         self.main_menu()
+        return user_items
 
     def introductory_sequence(self):
         """Starts story arc of the GSIT-Room"""
@@ -44,11 +45,13 @@ class GSITRoom(Room):
         print("You find yourself marching through the long corridor, hearing nothing but your footsteps...")
         for i in range(3):
             print("...Tap tap...")
+        time.sleep(2)
         print("\n...hmmhmmmm...")
         print("\nWhat was that??\n")
         for i in range(3):
             print("...Tap tap...")
-        print("Finally you find yourself in front of a door and enter the gsit room...\n")
+        time.sleep(2)
+        print("\nFinally you find yourself in front of a door and enter the gsit room...\n")
         print("The room is lit by a dim light, the walls are covered with book shelfs and the floor is covered with a thick carpet.")
         print("You spot an arcade game and a person reading 'Being and Nothingness' \nby Jean-Paul Sartre in a chair by the fireplace.\n")
     
@@ -131,10 +134,14 @@ class GSITRoom(Room):
             print("Prepare for the next word...")
 
         if self.completed_arcade:
-            # Here, the player wins an Apple Watch -> add to inventory
+            print("The arcade moves a little to the side, revealing a hidden compartment.")
+            print("You find a small box and decide to open it.")
+            self.items.append(Item("Apple Watch", "A useful device to detect falls", movable=True))
+            self.show_items(self.items)
             time.sleep(6)
             self.print_end_sequence()
         else:
+            self.arcade_points = 0
             print("You lost! You return to the main menu.")
         return self.main_menu()
 
