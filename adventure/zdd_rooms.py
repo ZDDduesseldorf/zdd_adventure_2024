@@ -1,5 +1,5 @@
 """This is to keep all special rooms of the ZDD."""
-from main_classes import Room
+from main_classes import Room, Item
 
 
 class ToiletCellar(Room):
@@ -14,6 +14,9 @@ class ToiletCellar(Room):
 
 ## ----------------------------------------------------------------
 ## List here all rooms
+
+# Define Items
+vr_headset = Item("VR headset", "Trying to escape reality with a virtual one might not work this time... or will it?", movable=True)
 
 toilet_cellar = ToiletCellar("toilet", "Yes, even the cellar has a toilet.")
 
