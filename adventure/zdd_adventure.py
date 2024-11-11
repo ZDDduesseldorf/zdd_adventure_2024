@@ -1,7 +1,9 @@
 from main_classes import CommandHandler, Item, Floor, Room
 from zdd_rooms import ALL_ROOMS
 
+
 EXIT_COMMAND = "exit"
+
 
 
 class ZDDAdventure:
@@ -13,6 +15,8 @@ class ZDDAdventure:
         self.game_active = True
         self.command_handler = CommandHandler(self)
 
+    
+        
     def create_floors(self):
         # Define the floors
         cellar = Floor("cellar", "It's a bit chilly here. The only light is coming from the emergency lights.")
@@ -38,6 +42,7 @@ class ZDDAdventure:
                             analog_book)
         cellar.add_room("archive", archive_room)
         cellar.add_room("toilet", ALL_ROOMS["toilet_cellar"])
+        cellar.add_room("mensa", ALL_ROOMS["mensa_tummy_aches"]) # added mensa
 
         reception = Room("reception", "You see a welcoming desk and a receptionist.")
         ground_floor.add_room("reception", reception)
@@ -90,11 +95,18 @@ class ZDDAdventure:
                 if next_room:
                     self.current_room = next_room
                     self.current_room.enter_room(self.items, self.command_handler)
+                if self.current_room.name == "mensa":
+                    if not self.current_room.allowed_to_leave:
+                        self.current_room = self.current_room.next_room
+                        self.current_room.enter_room(self.items, self.command_handler)
+ 
+                        
                 else:
                     print("There is no such room...")
             else:
                 print(f"Unknown command! Type '{EXIT_COMMAND}' to stop the game.")
 
+    
 
 if __name__ == "__main__":
     adventure = ZDDAdventure()
