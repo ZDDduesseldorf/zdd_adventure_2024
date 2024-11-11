@@ -38,6 +38,8 @@ class ZDDAdventure:
                             analog_book)
         cellar.add_room("archive", archive_room)
         cellar.add_room("toilet", ALL_ROOMS["toilet_cellar"])
+        
+        cellar.add_room("pigsty", ALL_ROOMS["pigsty"])
 
         reception = Room("reception", "You see a welcoming desk and a receptionist.")
         ground_floor.add_room("reception", reception)
