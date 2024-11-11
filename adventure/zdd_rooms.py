@@ -136,7 +136,6 @@ class GSITRoom(Room):
         if self.completed_arcade:
             print("The arcade moves a little to the side, revealing a hidden compartment.")
             print("You find a small box and decide to open it.")
-            self.items.append(Item("Apple Watch", "A useful device to detect falls", movable=True))
             self.show_items(self.items)
             time.sleep(6)
             self.print_end_sequence()
@@ -263,7 +262,7 @@ class GSITRoom(Room):
 
 toilet_cellar = ToiletCellar("toilet", "Yes, even the cellar has a toilet.")
 apple_watch=Item("Apple Watch", "A useful device to detect falls", movable=True)
-gsit_room = GSITRoom("GSIT Room", "The Morals of Hell")
+gsit_room = GSITRoom("GSIT Room", "The Morals of Hell", apple_watch)
 
 # Add your room instance here, similar to the example below:
 # my_room = MyRoom("room_name", "room_description")
