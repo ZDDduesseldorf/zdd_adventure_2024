@@ -96,6 +96,9 @@ class Room:
         # Run whatever happens in this room:
         user_items = self.run_story(user_items)
 
+        if self.name == "mensa":
+            return
+            
         while True:
             action = input(">> 'leave' to exit the room, 'inspect' to look around: ").lower()
 
