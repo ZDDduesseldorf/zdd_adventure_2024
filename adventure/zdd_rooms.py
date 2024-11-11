@@ -1,6 +1,5 @@
 """This is to keep all special rooms of the ZDD."""
 from main_classes import Room, Item, Item
-from time import sleep
 import random
 
 
@@ -30,7 +29,7 @@ class MensaTummyAches(Room):
         print("You're swept through a dark tunnel, twisting and turning.")
         print("Finally, the wind subsides, and you find yourself in a bustling hall.")
         print("You open your eyes to see a huge crowd of people queuing for food.")
-        print("Welcome to the MENSA OF THE TUMMY ACHES!\n")
+        print("\nWelcome to the MENSA OF THE TUMMY ACHES!\n")
 
         print("Your stomach grumbles; you're quite hungry.")
         print("But this place is known for its perils and... interesting cuisine.")
@@ -116,8 +115,9 @@ class MensaTummyAches(Room):
                 print("\nYou dive in and eat heartily.")
                 print("The stew tastes great at first, but then the saltiness hits you.")
                 print("You realize you've made a great mistake!")
-                print("In dramatic fashion, you faint and wake up back at behind the line, still hungry.")
                 self.allowed_to_leave = False
+                self.next_room = random.choice([instant for room_name, instant in ALL_ROOMS.items() if self.name not in room_name])
+                print(f"In dramatic fashion, you faint and wake up in the {self.next_room.name}")
                 return user_items
         else:
             print("\nConfused, you wander aimlessly and accidentally step into thickened sauce!")
@@ -159,7 +159,8 @@ class MensaTummyAches(Room):
                 self.next_room = random.choice([instant for room_name, instant in ALL_ROOMS.items() if self.name not in room_name])
                 self.allowed_to_leave = False
                 print(f"As you open up your eyes, you find yourself in the {self.next_room.name}.")
-                return [x for x in user_items if x.name != "healing mate"]
+                user_items = [x for x in user_items if x.name != "healing mate"]
+                return user_items
             
                 
         print("\nYou follow the exit signs, navigating through the crowd.")
@@ -173,7 +174,10 @@ class MensaTummyAches(Room):
         return user_items
     
     def input_hander(self, choices: list):
-        choice_str =  "".join([f"{choice}, " for choice in choices[:-1]]) + f"or {choices[-1]}"
+        if len(choices) > 2:
+            choice_str =  "".join([f"{choice}, " for choice in choices[:-1]]) + f"or {choices[-1]}"
+        else:
+            choice_str = f"{choices[0]} or {choices[1]}"
         usr_input = input(f"Enter your choice ({choice_str}): ")
         if usr_input in choices:
             self.print_devider()
