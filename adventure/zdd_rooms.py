@@ -29,7 +29,7 @@ class StudyRoom(Room):
             print("That's not correct. The room remains quiet.")
         return user_items
     
-study_room = StudyRoom("study room", "A quiet room with shelves of books and an old chalkboard.")    
+study_room = StudyRoom("study room", "A quiet room with shelves of books and an old chalkboard.")
 toilet_cellar = ToiletCellar("toilet", "Yes, even the cellar has a toilet.")
 
 # Add your room instance here, similar to the example below:
