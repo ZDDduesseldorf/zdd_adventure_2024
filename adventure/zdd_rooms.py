@@ -104,6 +104,7 @@ class MensaTummyAches(Room):
                         print("The saltiness fades, and you feel much better!")
                         print("Crisis averted, you proceed with your adventure.")
                         user_items = [x for x in user_items if x.name != "healing mate"]
+                        self.allowed_to_leave = True
                 else:
                     print("\nYou gulp down water, but it doesn't help much.")
                     print("Your vision blurs, and you feel faint.")
@@ -151,6 +152,7 @@ class MensaTummyAches(Room):
             if final_choice == "1":
                 print("\nYou follow the exit signs, navigating through the crowd.")
                 print("After a few twists and turns, you find the exit.")
+                self.allowed_to_leave = True
 
             elif final_choice == "2":
                 print("\nYou take a sip of the 'Healing Mate.'")
