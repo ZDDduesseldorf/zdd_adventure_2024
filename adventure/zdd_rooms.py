@@ -39,7 +39,7 @@ class MensaTummyAches(Room):
         print("2. A fresh vegetarian dish.")
         print("3. The infamous stew of the day.")
 
-        meal_choice = self.input_hander(["1", "2", "3"])        
+        meal_choice = input("Which meal do you want to choose? (1, 2, or 3): ")
 
         if meal_choice == "1":
             print("\nYou choose the meat meal and approach the line.")
