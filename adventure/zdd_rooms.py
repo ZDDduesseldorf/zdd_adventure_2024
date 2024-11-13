@@ -147,6 +147,22 @@ class Gym(Room):
                     print("That's not a valid option in the gym.")
                     continue
 
+                workout_certificate = Item(name="Workout Certificate", description=workout_summary)   # a caretificate as an item to collect when workout is done
+                                
+                exists = False                                                                        # check if the item already exists in the items list
+                for i, item in enumerate(user_items):
+                    if item.name == "Workout Certificate":
+                        user_items[i] = workout_certificate                                           # if so, replace certificate
+                        exists = True
+                        break
+                
+                if not exists:
+                    user_items.append(workout_certificate)                                            # if not, add the certificate 
+    
+                time.sleep(2)
+                print("You received a workout certificate for your training session! \n you go out ...")
+                time.sleep(2)
+
             elif action == "cardio":
                 running_ascii = """
                         ,////,
@@ -187,6 +203,24 @@ class Gym(Room):
                         break                                                                          # Cardio finished 
                     else:
                         print("That's not a valid option. Please answer with 'yes' or 'no'.")
+
+                
+                cardio_certificate = Item(name="Cardio Certificate", 
+                                          description=f"Cardio duration: {cardio_duration} minutes.") # a caretificate as an item to collect when cardio is done
+                
+                exists = False
+                for i, item in enumerate(user_items):                                                 # check if the item already exists in the items list
+                    if item.name == "Cardio Certificate":
+                        user_items[i] = cardio_certificate                                            # if so, replace certificate
+                        exists = True
+                        break
+                
+                if not exists:
+                    user_items.append(cardio_certificate)                                             # if not, add the certificate 
+                
+                time.sleep(2)
+                print("You received a cardio certificate for your session! \n you go out ...")
+                time.sleep(2)
 
             elif action == "end":
                 self.stop_music()                                                                     #stops music
