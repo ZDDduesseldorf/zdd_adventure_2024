@@ -34,6 +34,7 @@ class ZDDAdventure:
 
         # Define rooms in each floor
         analog_book = Item("old book", "a real book made of paper", movable=True)
+        old_map = Item("old map", "An ancient map showing hidden pathways in the ZDD.", movable=True)  # Added item
         archive_room = Room("archive", "Old records and dusty books everywhere.",
                             analog_book)
         cellar.add_room("archive", archive_room)
@@ -42,7 +43,10 @@ class ZDDAdventure:
         reception = Room("reception", "You see a welcoming desk and a receptionist.")
         ground_floor.add_room("reception", reception)
 
-        #... Add other rooms ...
+        study_room = ALL_ROOMS["study_room"] 
+        first_floor.add_room("study", study_room)  # Added the study room to the first floor
+
+        # ... Add other rooms as needed ...
 
         return {
             "cellar": cellar,
