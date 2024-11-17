@@ -54,7 +54,6 @@ class CrocodileCage(Room):
             try:
                 #Player chooses a tooth
                 choice = int(input("Choose a tooth (1-10): "))
-                print(bad_tooth)
 
                 #Check if its the "bad" tooth
                 if choice == bad_tooth:
