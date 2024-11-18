@@ -27,11 +27,17 @@ filter_for_bool = {key: value for key, value in riddle_keys.items() if value[0]}
 #     print(riddles[most_recent_riddle[0]])
 
 
-for entry in riddles:
-    print(f"type '{entry}' for {entry}")
-playterinput = input()
+# for entry in riddles:
+#     print(f"type '{entry}' for {entry}")
+# playterinput = input()
 
-if playterinput in riddles:
-    print(f"heading to {playterinput}")
-else:
-    print("not recognized!")
+# if playterinput in riddles:
+#     print(f"heading to {playterinput}")
+# else:
+#     print("not recognized!")
+
+opening_prompts = ["Well hello there! It's been a while since anyone came to visit me. I am Dr. Sylas Thorncroft, and perhaps who might you be?\n",
+                           "Look who's back already! Came to take another look at things? Remind me of your name please\n",
+                           "You don't seem to get bored! Amazing that you're still here.\n"]
+
+print(len(opening_prompts)-1)
