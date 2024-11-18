@@ -1,9 +1,6 @@
 from main_classes import CommandHandler, Item, Floor, Room
 from zdd_rooms import ALL_ROOMS
-
 EXIT_COMMAND = "exit"
-
-
 class ZDDAdventure:
     def __init__(self):
         self.items = []
@@ -12,7 +9,6 @@ class ZDDAdventure:
         self.current_room = None
         self.game_active = True
         self.command_handler = CommandHandler(self)
-
     def create_floors(self):
         # Define the floors
         cellar = Floor("cellar", "It's a bit chilly here. The only light is coming from the emergency lights.")
@@ -21,7 +17,6 @@ class ZDDAdventure:
         second_floor = Floor("second floor", "This floor hosts the professors' offices and some research labs.")
         third_floor = Floor("third floor", "This is the topmost floor with the lecture hall and meeting rooms. You have heard about a roof terrace, but that might just be stories...")
         # roof_floor = Floor("roof", "You really shouldn't be here!!!")
-
         # Connect floors
         cellar.add_connection("up", ground_floor)
         ground_floor.add_connection("down", cellar)
@@ -31,18 +26,17 @@ class ZDDAdventure:
         second_floor.add_connection("down", first_floor)
         second_floor.add_connection("up", third_floor)
         third_floor.add_connection("down", second_floor)
-
         # Define rooms in each floor
         analog_book = Item("old book", "a real book made of paper", movable=True)
         archive_room = Room("archive", "Old records and dusty books everywhere.",
                             analog_book)
         cellar.add_room("archive", archive_room)
         cellar.add_room("toilet", ALL_ROOMS["toilet_cellar"])
-
         reception = Room("reception", "You see a welcoming desk and a receptionist.")
         ground_floor.add_room("reception", reception)
 
         #... Add other rooms ...
+        first_floor.add_room("mirevi-lab", ALL_ROOMS["mirevi_lab"])
 
         return {
             "cellar": cellar,
@@ -50,7 +44,6 @@ class ZDDAdventure:
             "first floor": first_floor,
             "second floor": second_floor
         }
-
     def play(self):
         introduction = (
         "... slowly ... you .... wake ... up ...\n"
@@ -66,11 +59,9 @@ class ZDDAdventure:
             print(self.current_floor.get_orientation())
             print("Type 'inventory' to inspect your inventory.")
             action = input("What do you want to do?: ").lower()
-
             # Handle global commands first
             if self.command_handler.handle_global_commands(action):
                 break
-
             # Exit the game
             if action == EXIT_COMMAND or action == "inventory":
                 continue
@@ -94,8 +85,6 @@ class ZDDAdventure:
                     print("There is no such room...")
             else:
                 print(f"Unknown command! Type '{EXIT_COMMAND}' to stop the game.")
-
-
 if __name__ == "__main__":
     adventure = ZDDAdventure()
     adventure.play()
