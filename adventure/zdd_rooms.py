@@ -16,11 +16,10 @@ class ToiletCellar(Room):
     
 class MensaTummyAches(Room):
     def __init__(self, name, description, item):
-        self.next_room = self
-        self.allowed_to_leave = True
+        self.next_room = self #  if not allowed to leave, the next room is the current room (can be overwritten by the mensa)
+        self.allowed_to_leave = True # variable to check if the player can leave the room
         
         super().__init__(name, description, item)
-    # TODO: After returning from the Mensa, the leave/ inspect message should be overwritten
         
     def run_story(self, user_items):
         print("What's that sound? You hear a loud rumbling.")
@@ -64,7 +63,7 @@ class MensaTummyAches(Room):
                 if action_choice == "i":
                     print("\nYou act as if nothing happened.")
                     print("The chef, impressed by your boldness, serves you generously and hands you a healing mate.")
-                    user_items.append(self.items[0])
+                    user_items.append(self.items[0]) # add healing mate to user items
                     print("You enjoy your meal, feeling a bit mischievous.")
                 elif action_choice == "ii":
                     print("\nYou break into a dance, diverting attention.")
@@ -88,7 +87,7 @@ class MensaTummyAches(Room):
                 print("It's incredibly salty! Your mouth feels like a desert.")
                 print("You might be experiencing salt poisoning!")
                 
-                if "healing mate" in [x.name for x in user_items]:
+                if "healing mate" in [x.name for x in user_items]: # check if the user has the healing mate
                     print("Do you want to:")
                     print("i. Drink water quickly.")
                     print("ii. Use the 'Healing Mate' you found.")
@@ -103,21 +102,21 @@ class MensaTummyAches(Room):
                         print("\nYou sip the 'Healing Mate' you find in your bag.")
                         print("The saltiness fades, and you feel much better!")
                         print("Crisis averted, you proceed with your adventure.")
-                        user_items = [x for x in user_items if x.name != "healing mate"]
-                        self.allowed_to_leave = True
+                        user_items = [x for x in user_items if x.name != "healing mate"] # remove healing mate from user items
+                        self.allowed_to_leave = True # user is allowed to leave the room
                 else:
                     print("\nYou gulp down water, but it doesn't help much.")
                     print("Your vision blurs, and you feel faint.")
                     print("You wake up right back at the end of the line, still hungry.")
-                    # user not allowed to leave from here on
+                    # user not allowed to leave from here on, next room is mensa
                     self.allowed_to_leave = False
                     return user_items
             elif stew_choice == "b":
                 print("\nYou dive in and eat heartily.")
                 print("The stew tastes great at first, but then the saltiness hits you.")
                 print("You realize you've made a great mistake!")
-                self.allowed_to_leave = False
-                self.next_room = random.choice([instant for room_name, instant in ALL_ROOMS.items() if self.name not in room_name])
+                self.allowed_to_leave = False # user is not allowed to leave loop
+                self.next_room = random.choice([instant for room_name, instant in ALL_ROOMS.items() if self.name not in room_name]) # the next room is random and not the current room
                 print(f"In dramatic fashion, you faint and wake up in the {self.next_room.name}")
                 return user_items
         else:
@@ -130,7 +129,7 @@ class MensaTummyAches(Room):
             if sauce_choice == "a":
                 print("\nYou call out for help.")
                 print("A kind chef helps you out and offers you a healing mate to freshen up.")
-                user_items.append(self.items[0])
+                user_items.append(self.items[0]) # add healing mate to user items
                 print("Grateful, you accept the healing mate.")
             elif sauce_choice == "b":
                 print("\nYou wiggle vigorously.")
@@ -158,10 +157,10 @@ class MensaTummyAches(Room):
                 print("\nYou take a sip of the 'Healing Mate.'")
                 print("A warm sensation washes over you.")
                 print("You feel your eyes slowly close.")
-                self.next_room = random.choice([instant for room_name, instant in ALL_ROOMS.items() if self.name not in room_name])
-                self.allowed_to_leave = False
+                self.next_room = random.choice([instant for room_name, instant in ALL_ROOMS.items() if self.name not in room_name]) # the next room is random and not the current room
+                self.allowed_to_leave = False # user is not allowed to leave loop
                 print(f"As you open up your eyes, you find yourself in the {self.next_room.name}.")
-                user_items = [x for x in user_items if x.name != "healing mate"]
+                user_items = [x for x in user_items if x.name != "healing mate"] # remove healing mate from user items
                 return user_items
             
                 
@@ -176,6 +175,12 @@ class MensaTummyAches(Room):
         return user_items
     
     def input_hander(self, choices: list):
+        """ Function to handle user input. The function receives a list of choices and creates the a choice
+            string to be displayed to the user. The function then asks the user to enter a valid choice.
+            If the user enters a valid choice, the function returns the choice. If the user enters an invalid
+            choice, the function prints an error message and asks the user to enter a valid choice again.
+        """
+        
         if len(choices) > 2:
             choice_str =  "".join([f"{choice}, " for choice in choices[:-1]]) + f"or {choices[-1]}"
         else:

@@ -95,10 +95,10 @@ class ZDDAdventure:
                 if next_room:
                     self.current_room = next_room
                     self.current_room.enter_room(self.items, self.command_handler)
-                if self.current_room.name == "mensa":
-                    if not self.current_room.allowed_to_leave:
-                        self.current_room = self.current_room.next_room
-                        self.current_room.enter_room(self.items, self.command_handler)
+                if self.current_room.name == "mensa":  # if user was in mensa
+                    if not self.current_room.allowed_to_leave: # check if user is allowed to leave the loop (also false if user decides to teleport)
+                        self.current_room = self.current_room.next_room # if not, set next room as next room decided by mensa
+                        self.current_room.enter_room(self.items, self.command_handler) # and enter it
  
                         
                 else:
