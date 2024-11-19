@@ -63,33 +63,40 @@ class JungleGreenhouse(Room):
         }
         pass
     
-    def text_waiting_time(self, time):
+    def text_waiting_time(self, time): # not working!
+        """
+        delays printing of the next line for easier reading
+        """
         # time.sleep(time)
         print(40 * "-")
         # time.sleep(time)
         pass
 
     def inspect_room(self):
+        """
+        Main room description
+        the player is prompted with 5 points of interest around the room, and can choose to approach them individually 
+        """
         print("Thick bushes form dense, rustling walls of green.\nLight streams through a skylight, illuminating the jungle below.\nAn intricate plant pot with carved patterns houses a massive plant.\nVines hang from above, their tendrils snaking across surfaces.\nA snake statue stands in the center, its emerald eyes glinting in the light.\n")
         print("You decide to look around.\n")
         for entry in self.riddles:
             print(f"Type '{entry}' to inspect the {entry}")
+        print("Type 'leave' to leave")
         choice = input("What do you want to do?: ").lower()
         self.text_waiting_time(2)
         if choice in self.riddles:
             print(f"You apprach the {choice}")
             self.text_waiting_time(2)
+        elif choice == "leave":
+            print("cant leave rn. Youre stuck until you solve the riddle\nmuahahahahhahaha")
         else:
-            print("choice not recognized")
+            print("choice not recognized") # crashes!
         return choice    
 
-    def botanist(self):
-        """The botanist gives the player riddles they all have the same
-
-        The botanist has 5 riddles with the same result: "machete"
-
-        this should encourage the player to look around the room and look for clues
-        depending on which item the player brings back the botanist will give more clues, or a prize
+    def botanist_introduction(self):
+        """
+        This function introduces the player to the botanist.
+        depending on the visitation number, the player is prompted with different sentences
         """
         opening_prompts = ["Well hello there! It's been a while since anyone came to visit me. I am Dr. Sylas Thorncroft, and perhaps who might you be?\n",
                            "Look who's back already! Came to take another look at things? Remind me of your name please\n",
@@ -104,8 +111,8 @@ class JungleGreenhouse(Room):
         pass
 
     def current_riddle(self):
-        """depending on which part of the room the player had the most recent interaction with,
-        they are prompted with a specific riddle when returning to the botanist
+        """
+        depenting on which room section the player chose to inspect in self.inspect_room() the player is confronted with the coresponding riddle 
         """
         introduction_to_riddles = f"Look around the room {self.player_alias}! If you see something interesting come back to me!\n"
 
@@ -114,8 +121,9 @@ class JungleGreenhouse(Room):
         if not filter_for_bool:
             print(introduction_to_riddles)
         else:
-            most_recent_riddle = max(filter_for_bool.items(), key=lambda item: item[1][1]) # find item with highest value (second element in the list
-            print(self.riddles[most_recent_riddle[0]])
+            self.text_waiting_time(2)
+            # most_recent_riddle = max(filter_for_bool.items(), key=lambda item: item[1][1]) # find item with highest value (second element in the list)
+            # print(self.riddles[most_recent_riddle[0]])
         pass
 
     def next_riddle(self, room_section):
@@ -130,8 +138,9 @@ class JungleGreenhouse(Room):
     def botanist_riddle(self, room_section):
         """
         """
-        print(f"After inspecting the {room_section}, you return to the old botanist\n")
+        print(f"After inspecting the {room_section}, you return to the old botanist.\n")
         print(self.botanist_response[room_section])
+        print(self.riddles[room_section])
         pass
     
     def botanist_request_answer(self):
@@ -141,12 +150,14 @@ class JungleGreenhouse(Room):
             print("Alright! im glad you've got something!")
             player_answer = input("What is your answer?: ").lower()
             if player_answer == "machete":
+                self.riddle_status = True
                 print("Amazing! You solved the riddle. Take this")
                 print("\nadd hand machete process here\n")
             else:
                 print(f"Sadly {player_answer} isn't the right answer.")
                 print("But I'll give you a hint! The answer is the same for all riddles!")
         else:
+            self.text_waiting_time(2)
             print("I'll give you a clue...\nThe answer is the same for all riddles!")
         pass
 
@@ -154,13 +165,18 @@ class JungleGreenhouse(Room):
         print("You enter an overgrown but spacious room with a massive skylight.\nThere are towering monsteras, vines and vibrant flowers all around you.\nThe air is thick and humid, and there's an eerie sense of calm.\nAn old man with small circular glasses sits on a bench, inspecting a flower.")
         choice = input("Type 'approach' to talk to the botanist.\nType 'leave' to do nothing\nWhat do you want to do?: ")
         if choice == "approach":
-            self.botanist()
-            while True:
+            self.botanist_introduction()
+            while not self.riddle_status:
                 self.current_riddle()
                 next_section = self.inspect_room()
                 self.next_riddle(next_section)
                 self.botanist_riddle(next_section)
                 self.botanist_request_answer()
+                self.text_waiting_time(2)
+            filter_for_bool = {key: value for key, value in self.riddle_keys.items() if value[0]} # filters for bools in riddle dict
+            num_riddles_to_solve = max(filter_for_bool.items(), key=lambda item: item[1][1]) # find item with highest value (second element in the list)
+            print(f"your so cool! solving the riddle on your {num_riddles_to_solve[1]}th try is impressive!")
+            self.text_waiting_time(2)
         elif choice == "leave":
             print("leaving, but not immediately") # NOT FINISHED!!!!
         else:
@@ -170,7 +186,7 @@ class JungleGreenhouse(Room):
 ## ----------------------------------------------------------------
 ## List here all rooms
 
-toilet_cellar = ToiletCellar("toilet", "Yes, even the cellar has a toilet.")
+toilet_cellar = ToiletCellar("toilet", "Yes, even the cellar has a toilet.") 
 jungle_greenhouse = JungleGreenhouse("greenhouse", "Of course there's a greenhouse! The architects really took advantage of the space behind the ZDD building")
 
 # Add your room instance here, similar to the example below:
