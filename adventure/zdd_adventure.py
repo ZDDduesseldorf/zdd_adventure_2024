@@ -45,6 +45,7 @@ class ZDDAdventure:
         #... Add other rooms ...
 
         cellar.add_room("table_tennis_room", ALL_ROOMS["table_tennis_room"])
+        cellar.add_room("football_stadium", ALL_ROOMS["football_stadium"])
 
 
         return {
