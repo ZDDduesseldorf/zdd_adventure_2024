@@ -27,7 +27,6 @@ class JungleGreenhouse(Room):
     Watering plants: players can water certain plants using a watering can to reveal hints or interact with the environment.
     Might also trigger distractions like vines swaying or mist clouding the vision.
     """
-
     def __init__(self, name, description, items=None):
         """ inherited: name (str), description (str), visited (int)
         """
@@ -66,15 +65,16 @@ class JungleGreenhouse(Room):
         }
         return
 
-    
     def run_story(self, user_items):
         print("You enter an overgrown but spacious room with a massive skylight.\nThere are towering monsteras, vines and vibrant flowers all around you.\nThe air is thick and humid, and there's an eerie sense of calm.\nAn old man with small circular glasses sits on a bench, inspecting a flower.")
-        loop_counter = 0
+        self.loop_counter = 0
         while True:
+            self.text_waiting_time(2)
             choice = input("Type 'approach' to talk to the botanist.\nType 'leave' to do leave\nWhat do you want to do?: ")
             if choice == "approach":
-                if loop_counter == 0:
-                    loop_counter += 1
+                if self.loop_counter == 0:
+                    self.loop_counter += 1
+                    self.text_waiting_time(2)
                     self.botanist_introduction()
                     self.hidden_room(user_items)
                     while not self.riddle_status:
@@ -109,6 +109,8 @@ class JungleGreenhouse(Room):
                             print("I'll give you a prize if you get it right!")
                             self.text_waiting_time(2)
             elif choice == "leave":
+                self.text_waiting_time(2)
+                print("Heading to the door...")
                 return user_items
             else:
                 self.text_waiting_time(1)
@@ -128,24 +130,23 @@ class JungleGreenhouse(Room):
         Main room description
         the player is prompted with 5 points of interest around the room, and can choose to approach them individually 
         """
-        print("Thick bushes form dense, rustling walls of green.\nLight streams through a skylight, illuminating the jungle below.\nAn intricate plant pot with carved patterns houses a massive plant.\nVines hang from above, their tendrils snaking across surfaces.\nA snake statue stands in the center, its emerald eyes glinting in the light.\n")
-        print("You decide to look around.\n")
-        for entry in self.riddles:
-            print(f"Type '{entry}' to inspect the {entry}")
-        print()
-        print("Type 'leave' to leave")
-        choice = input("What do you want to do?: ").lower()
-        self.text_waiting_time(2)
-        if choice in self.riddles:
-            print(f"You apprach the {choice}")
+        while True:
+            print("Thick bushes form dense, rustling walls of green.\nLight streams through a skylight, illuminating the jungle below.\nAn intricate plant pot with carved patterns houses a massive plant.\nVines hang from above, their tendrils snaking across surfaces.\nA snake statue stands in the center, its emerald eyes glinting in the light.\n")
+            print("You decide to look around.\n")
+            for entry in self.riddles:
+                print(f"Type '{entry}' to inspect the {entry}")
+            print()
+            choice = input("What do you want to do?: ").lower()
             self.text_waiting_time(2)
-            return choice
-        elif choice != "leave":
-            print("Invalid input, try again")
-        else:
-            print("exiting")
-            return
-                        
+            if choice in self.riddles:
+                print(f"You apprach the {choice}")
+                self.text_waiting_time(2)
+                return choice
+            elif choice == "leave":
+                print("exiting")
+                return    
+            else:
+                print("Invalid input, try again")                   
 
     def botanist_introduction(self):
         """
@@ -164,7 +165,6 @@ class JungleGreenhouse(Room):
             print(opening_prompts[random.randint(1, 3)])
             self.player_alias = "stranger"
             return
-
 
     def current_riddle(self):
         """
@@ -203,6 +203,7 @@ class JungleGreenhouse(Room):
         """This function handles the answers to the riddles, and provides hints accordingly.
         """
         while True:
+            
             print("Do you know the answer?")
             player_y_n = input("Type 'yes' or 'no': ").lower()
             if player_y_n == "yes":
@@ -217,13 +218,21 @@ class JungleGreenhouse(Room):
                     print("But I'll give you a hint! The answer is the same for all riddles!")
                     return
             elif player_y_n == "no":
+                self.loop_counter += 1
                 self.text_waiting_time(2)
                 print("I'll give you a clue...\nThe answer is the same for all riddles!")
+                if self.loop_counter == 3:
+                    print()
+                    print("Here's another hint: it's a very sharp object")
+                elif self.loop_counter == 4:
+                    print()
+                    print("Here's another hint: usually its about the same size as an arm")
+                elif self.loop_counter >= 5:
+                    print()
+                    print("Here's another hint: it's a tool used in the jungle")
                 return
             else:
                 print("Invalid input, try again.")
-
-
 
     def hidden_room(self, user_items):
         """A secret room in the greenhouse that can be accessed if the user carries a machete in their inventory
@@ -275,7 +284,6 @@ class JungleGreenhouse(Room):
             else:
                 return user_items    
             
-
 ## ----------------------------------------------------------------
 ## List here all rooms
 
@@ -289,7 +297,5 @@ ALL_ROOMS = {
     "toilet_cellar": toilet_cellar,
     # Add your room key-value pairs here:
     # "my_room_key": my_room
-
     "greenhouse": greenhouse
-
 }
