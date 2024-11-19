@@ -45,6 +45,7 @@ class ZDDAdventure:
         #... Add other rooms ...
 
         cellar.add_room("table_tennis_room", ALL_ROOMS["table_tennis_room"])
+        ground_floor.add_room("praying_and_calculate",ALL_ROOMS["prayer_room"])
 
 
         return {
