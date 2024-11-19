@@ -165,6 +165,77 @@ class TableTennisRoom(Room):
             else:
                 print("Invalid choice. Please try again.")
 
+class LibraryRoom(Room):
+    """
+    Represents a library room filled with bookshelves and armchairs.
+    Players can browse shelves or select books with hidden letters.
+    """
+    def __init__(self, name, description, items=None):
+        super().__init__(name, description, items)
+
+    def run_story(self, user_items):
+        """
+        Contains the story and interactions for the library room.
+        Players can browse shelves or select a book.
+        """
+        print("\nYou enter a warm, inviting room filled with bookshelves and soft armchairs.")
+        while True:
+            print("\nOptions:")
+            print("1. Browse the shelves.")
+            print("2. Select a book.")
+            print("3. Leave the library.")
+            action = input("What would you like to do? (1/2/3): ").strip()
+            
+            if action == "1":
+                self.browse_shelves()
+            elif action == "2":
+                user_items = self.select_book(user_items)
+            elif action == "3":
+                print("You leave the library, feeling more knowledgeable.")
+                break
+            else:
+                print("Invalid choice. Please choose 1, 2, or 3.")
+        return user_items
+
+    def browse_shelves(self):
+        """
+        Simulates browsing shelves where players discover hidden notes.
+        """
+        print("\nYou wander along the shelves, admiring the variety of books.")
+        print("Tucked between the pages of an old book, you find a handwritten note.")
+        print("The note reads: 'Knowledge is the key to all doors.'")
+
+    def select_book(self, user_items):
+        """
+        Allows players to select a book or letter to take with them.
+        Adds the item to the player's inventory if selected.
+        """
+        book = Item("ancient tome", "A mysterious ancient tome filled with cryptic symbols.", movable=True)
+        letter = Item("letters", "A collection of personal letters tucked between books.", movable=True)
+
+        while True:
+            print("\nAvailable items:")
+            print("1. Ancient Tome")
+            print("2. Letters")
+            print("3. None")
+            choice = input("Which item would you like to take? (1/2/3): ").strip()
+
+            if choice == "1":
+                if book.is_movable(user_items):
+                    user_items.append(book)
+                    print("You take the Ancient Tome with you.")
+                    break
+            elif choice == "2":
+                if letter.is_movable(user_items):
+                    user_items.append(letter)
+                    print("You take the Letters with you.")
+                    break
+            elif choice == "3":
+                print("You decide not to take anything.")
+                break
+            else:
+                print("Invalid choice. Please choose 1, 2, or 3.")
+        return user_items
                     
 
 toilet_cellar = ToiletCellar("toilet", "Yes, even the cellar has a toilet.")
@@ -174,11 +245,12 @@ toilet_cellar = ToiletCellar("toilet", "Yes, even the cellar has a toilet.")
 
 
 table_tennis_room = TableTennisRoom("table tennis room", "A room where you can play table tennis.")
-
+library = LibraryRoom("library", "A warm and inviting corner filled with bookshelves and soft armchairs.")
 ALL_ROOMS = {
     "toilet_cellar": toilet_cellar,
     # Add your room key-value pairs here:
     # "my_room_key": my_room
 
-    "table_tennis_room": table_tennis_room
+    "table_tennis_room": table_tennis_room,
+    "library": library
 }
