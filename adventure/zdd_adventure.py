@@ -43,6 +43,7 @@ class ZDDAdventure:
         ground_floor.add_room("reception", reception)
 
         #... Add other rooms ...
+        third_floor.add_room("rooftop", ALL_ROOMS["rooftop"])
 
         cellar.add_room("table_tennis_room", ALL_ROOMS["table_tennis_room"])
 
