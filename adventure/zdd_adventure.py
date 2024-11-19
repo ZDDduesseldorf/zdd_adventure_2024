@@ -40,12 +40,16 @@ class ZDDAdventure:
         cellar.add_room("toilet", ALL_ROOMS["toilet_cellar"])
         
         reception = Room("reception", "You see a welcoming desk and a receptionist.")
+
         ground_floor.add_room("reception", reception)
 
         #... Add other rooms ...
 
-        cellar.add_room("table_tennis_room", ALL_ROOMS["table_tennis_room"])
+        # greenhouse = Room("greenhouse", "An overgrown greenhouse at the back of the building")
+        # ground_floor.add_room("greenhouse", greenhouse)
 
+        ground_floor.add_room("greenhouse", ALL_ROOMS["greenhouse"])
+        cellar.add_room("table_tennis_room", ALL_ROOMS["table_tennis_room"])
 
         return {
             "cellar": cellar,
