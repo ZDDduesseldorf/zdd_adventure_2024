@@ -64,6 +64,7 @@ class Item:
         return False
 
 
+
 class Room:
     """Represents a game room with attributes and methods for room interaction."""
     def __init__(self, name, description, items=None):

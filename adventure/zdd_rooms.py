@@ -1,6 +1,7 @@
 """This is to keep all special rooms of the ZDD."""
-from main_classes import Room
+from main_classes import Room, Item
 import random
+import time
 
 class ToiletCellar(Room):
     def run_story(self, user_items):
@@ -33,6 +34,8 @@ class JungleGreenhouse(Room):
         super().__init__(name, description, items)
         self.riddle_status = False
         self.inspection_number = 0
+        self.machete = Item("machete", "a very sharp but used machete", movable=True)
+        self.water_of_youth = Item("Water of Youth", "Water from the foutain of youth from the jungle greenhouse.", movable=True)
         self.riddle_keys = {
             "thick bushes": [False, 0],
             "skylight": [False, 0],
@@ -61,16 +64,64 @@ class JungleGreenhouse(Room):
             "vines": "Whenever I see those vines I have to fight the urge to swing from them.\nAnyway, here's your riddle:\n",
             "snake statue": "When I was a kid I used to be terrified of that weird snake, but as I've grown older, I've grown to appreciate the attention to detail.\nAnyway, here's your riddle:\n"
         }
-        pass
+        return
+
     
-    def text_waiting_time(self, time): # not working!
+    def run_story(self, user_items):
+        print("You enter an overgrown but spacious room with a massive skylight.\nThere are towering monsteras, vines and vibrant flowers all around you.\nThe air is thick and humid, and there's an eerie sense of calm.\nAn old man with small circular glasses sits on a bench, inspecting a flower.")
+        loop_counter = 0
+        while True:
+            choice = input("Type 'approach' to talk to the botanist.\nType 'leave' to do leave\nWhat do you want to do?: ")
+            if choice == "approach":
+                if loop_counter == 0:
+                    loop_counter += 1
+                    self.botanist_introduction()
+                    self.hidden_room(user_items)
+                    while not self.riddle_status:
+                        self.current_riddle()
+                        next_section = self.inspect_room()
+                        self.next_riddle(next_section)
+                        self.botanist_riddle(next_section)
+                        self.botanist_request_answer()
+                        if self.riddle_status:
+                            print("Look here kid, you see that little crevase behind the snake statue?\nGo ahead, take my old machete that I have hidden over there.")
+                            self.text_waiting_time(2)
+                            user_items.append(self.machete)
+                            print("You picked up the Item 'machete'")
+                            self.text_waiting_time(2)
+                        else:
+                            print("I'll give you a prize if you get it right!")
+                else:
+                    self.hidden_room(user_items)
+                    while not self.riddle_status:
+                        self.current_riddle()
+                        next_section = self.inspect_room()
+                        self.next_riddle(next_section)
+                        self.botanist_riddle(next_section)
+                        self.botanist_request_answer()
+                        if self.riddle_status:
+                            print("Look here kid, you see that little crevase behind the snake statue?\nGo ahead, take my old machete that I have hidden over there.")
+                            self.text_waiting_time(2)
+                            user_items.append(self.machete)
+                            print("You picked up the Item 'machete'")
+                            self.text_waiting_time(2)
+                        else:
+                            print("I'll give you a prize if you get it right!")
+                            self.text_waiting_time(2)
+            elif choice == "leave":
+                return user_items
+            else:
+                self.text_waiting_time(1)
+                print("Invalid input")
+                self.text_waiting_time(1)
+
+    def text_waiting_time(self, wait_time):
         """
         delays printing of the next line for easier reading
         """
-        # time.sleep(time)
+        time.sleep(wait_time/3) # shortening of the waiting time, adjust to liking
         print(40 * "-")
-        # time.sleep(time)
-        pass
+        return
 
     def inspect_room(self):
         """
@@ -81,17 +132,20 @@ class JungleGreenhouse(Room):
         print("You decide to look around.\n")
         for entry in self.riddles:
             print(f"Type '{entry}' to inspect the {entry}")
+        print()
         print("Type 'leave' to leave")
         choice = input("What do you want to do?: ").lower()
         self.text_waiting_time(2)
         if choice in self.riddles:
             print(f"You apprach the {choice}")
             self.text_waiting_time(2)
-        elif choice == "leave":
-            print("cant leave rn. Youre stuck until you solve the riddle\nmuahahahahhahaha")
+            return choice
+        elif choice != "leave":
+            print("Invalid input, try again")
         else:
-            print("choice not recognized") # crashes!
-        return choice    
+            print("exiting")
+            return
+                        
 
     def botanist_introduction(self):
         """
@@ -99,16 +153,18 @@ class JungleGreenhouse(Room):
         depending on the visitation number, the player is prompted with different sentences
         """
         opening_prompts = ["Well hello there! It's been a while since anyone came to visit me. I am Dr. Sylas Thorncroft, and perhaps who might you be?\n",
-                           "Look who's back already! Came to take another look at things? Remind me of your name please\n",
-                           "Can't seem to get enough of the plants, can you? I can relate! Remind me of your name again?.\n",
-                           f"Back again for the {self.visited}th time? I still can't remember your name! Tell me again?\n"]
+                           "Look who's back already! Came to take another look at things?\n",
+                           "Can't seem to get enough of the plants, can you? I can relate!?\n",
+                           f"Back again for round {self.visited}?\n"]
         if self.visited == 1:
             self.player_alias = input(opening_prompts[0] + "Input your name: ")
             self.text_waiting_time(2)
+            return
         else:
-            self.player_alias = input(opening_prompts[random.randint(1, len(opening_prompts) - 1)] + "Input your name: ")
-            self.text_waiting_time(2)
-        pass
+            print(opening_prompts[random.randint(1, 3)])
+            self.player_alias = "stranger"
+            return
+
 
     def current_riddle(self):
         """
@@ -124,7 +180,7 @@ class JungleGreenhouse(Room):
             self.text_waiting_time(2)
             # most_recent_riddle = max(filter_for_bool.items(), key=lambda item: item[1][1]) # find item with highest value (second element in the list)
             # print(self.riddles[most_recent_riddle[0]])
-        pass
+        return
 
     def next_riddle(self, room_section):
         """for every visited room section the riddle_key dict is updated to true, and the inspection number is raised by one.
@@ -133,77 +189,107 @@ class JungleGreenhouse(Room):
         self.inspection_number =+ 1
         self.riddle_keys[room_section] = [True, self.inspection_number]
         print(self.room_section_description[room_section])
-        pass
+        return
 
     def botanist_riddle(self, room_section):
-        """
+        """This function prompts a riddle in accorance with the room section that was visited previously
         """
         print(f"After inspecting the {room_section}, you return to the old botanist.\n")
         print(self.botanist_response[room_section])
         print(self.riddles[room_section])
-        pass
+        return
     
     def botanist_request_answer(self):
-        print("Do you know the answer?")
-        player_y_n = input("Type 'yes' or 'no': ").lower()
-        if player_y_n == "yes":
-            print("Alright! im glad you've got something!")
-            player_answer = input("What is your answer?: ").lower()
-            if player_answer == "machete":
-                self.riddle_status = True
-                filter_for_bool = {key: value for key, value in self.riddle_keys.items() if value[0]} # filters for bools in riddle dict
-                num_riddles_to_solve = max(filter_for_bool.items(), key=lambda item: item[1][1]) # find item with highest value (second element in the list)
-                print("Good job on sloving the riddle! Very impressive!")
-            else:
-                print(f"Sadly {player_answer} isn't the right answer.")
-                print("But I'll give you a hint! The answer is the same for all riddles!")
-        else:
-            self.text_waiting_time(2)
-            print("I'll give you a clue...\nThe answer is the same for all riddles!")
-        pass
-
-    def hand_over_item(self, user_item):
-        if self.riddle_status:
-            print("Look here kid, you see that little crevase behind the snake statue? Go ahead, inspect it!")
-            self.user_items.append(user_item)
-        else:
-            print("I'll give you a prize if you get it right!")
-        pass
-
-    def run_story(self, user_items):
-        print("You enter an overgrown but spacious room with a massive skylight.\nThere are towering monsteras, vines and vibrant flowers all around you.\nThe air is thick and humid, and there's an eerie sense of calm.\nAn old man with small circular glasses sits on a bench, inspecting a flower.")
-        choice = input("Type 'approach' to talk to the botanist.\nType 'leave' to do nothing\nWhat do you want to do?: ")
-        if choice == "approach":
-            self.botanist_introduction()
-            while not self.riddle_status:
-                self.current_riddle()
-                next_section = self.inspect_room()
-                self.next_riddle(next_section)
-                self.botanist_riddle(next_section)
-                self.botanist_request_answer()
+        """This function handles the answers to the riddles, and provides hints accordingly.
+        """
+        while True:
+            print("Do you know the answer?")
+            player_y_n = input("Type 'yes' or 'no': ").lower()
+            if player_y_n == "yes":
+                print("Alright! im glad you've got something!")
+                player_answer = input("What is your answer?: ").lower()
+                if player_answer == "machete":
+                    self.riddle_status = True
+                    print("Good job on sloving the riddle! Very impressive!")
+                    return
+                else:
+                    print(f"Sadly {player_answer} isn't the right answer.")
+                    print("But I'll give you a hint! The answer is the same for all riddles!")
+                    return
+            elif player_y_n == "no":
                 self.text_waiting_time(2)
-                self.hand_over_item(user_items)
-            self.text_waiting_time(2)
-        elif choice == "leave":
-            print("leaving, but not immediately") # NOT FINISHED!!!!
-        else:
-            print("Invalid input")
-        return
+                print("I'll give you a clue...\nThe answer is the same for all riddles!")
+                return
+            else:
+                print("Invalid input, try again.")
+
+
+
+    def hidden_room(self, user_items):
+        """A secret room in the greenhouse that can be accessed if the user carries a machete in their inventory
+        """
+        while True:
+            if self.machete in user_items:
+                self.text_waiting_time(2)
+                print("Woha! With that machete you've got there you could really clean up those vines!")
+                print()
+                print("Type 'cut vines' to cut the vines")
+                print("Type 'leave' to leave")
+                user_input = input("What would you like to do?: ").lower()
+                if user_input == "cut vines":
+                    print()
+                    print("You approach the vines, and with a quick swoosh...")
+                    self.text_waiting_time(1)
+                    print("You cut through the vines!")
+                    print()
+                    print("The hole in the vines reveals a tiny fountain")
+                    self.text_waiting_time(5)
+                    print(".")
+                    self.text_waiting_time(1)
+                    print(".")
+                    self.text_waiting_time(1)
+                    print(".")
+                    self.text_waiting_time(1)
+                    print("You see a little container lying next to the fountain")
+                    print("Would you like to grab the container and fill it with the water?")
+                    user_input2 = input("Type 'yes' to grab and 'no' to leave: ").lower()
+                    if user_input2 == "yes":
+                        self.text_waiting_time(2)
+                        print("You found 'Water of youth'!")
+                        print("Would you like to add it to you inventory?")
+                        user_input3 = input("Type 'yes' to grab and 'no' to leave drop it and leave: ").lower()
+                        if user_input3 == "yes":
+                            user_items.append(self.water_of_youth)
+                            print("Water from the fountain of youth added to inventory")
+                            return user_items
+                    else:
+                        print()
+                        return user_items
+                elif user_input == "leave":
+                    print("Exiting secret room")
+                    self.text_waiting_time(2)
+                    return user_items
+                else:
+                    print("Invalid input, try again")
+                    self.text_waiting_time(2)
+            else:
+                return user_items    
+            
 
 ## ----------------------------------------------------------------
 ## List here all rooms
 
-# machete = Item("machete", "a very sharp but used machete", movable=True)
-
 toilet_cellar = ToiletCellar("toilet", "Yes, even the cellar has a toilet.") 
-jungle_greenhouse = Room("greenhouse", "An overgrown greenhouse at the back of the building")
+greenhouse = JungleGreenhouse("greenhouse", "An overgrown greenhouse at the back of the building")
 
 # Add your room instance here, similar to the example below:
 # my_room = MyRoom("room_name", "room_description")
 
 ALL_ROOMS = {
     "toilet_cellar": toilet_cellar,
-    "greenhouse": jungle_greenhouse
     # Add your room key-value pairs here:
     # "my_room_key": my_room
+
+    "greenhouse": greenhouse
+
 }
