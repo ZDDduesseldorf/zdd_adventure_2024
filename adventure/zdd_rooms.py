@@ -165,7 +165,49 @@ class TableTennisRoom(Room):
             else:
                 print("Invalid choice. Please try again.")
 
-                    
+
+class Prayer_Room(Room):
+    
+  def run_story(self, user_items):
+    choose = input(
+        "Sooo, after a long day of learning, you need to calm down and take a break from all the math, programming, and other stuff. "
+        "Here, you can do whatever you want to let your spiritual soul fly to the horizon. "
+        "You can take a power nap, pray, or meditate. What would you like to do (pray, sleep, meditate): "
+    )
+    if choose == "pray":
+        praying_carpet = Item(
+            "Carpet",
+            "A carpet to pray on. You cannot take it because other students will need it, so please leave it when you're finished.",
+            False
+        )
+        user_items.append(praying_carpet)
+        print("So you want to pray? you can use this carpet")
+    elif choose == "meditate":
+        headset = Item(
+            "Headset",
+            "You can use our headset to listen to nature sounds and relax.",
+            movable=True
+        )
+        user_items.append(headset)
+        print("So you want to meditate? you can use this headset to listen to some nature sounds and relax")
+
+    elif choose == "sleep":
+        pillow = Item(
+            "Pillow",
+            "You can use the pillow to sleep for a little while. We suggest sleeping for about 25 minutes.",
+            movable=False
+        )
+        user_items.append(pillow)
+      
+        print("So you want to take a powernap? you can use this Pillow and take a break")
+    def random_calculator(a,b):
+        return random.randint(-10,10)
+    Answer=input("So than you are finish , you can try our crazy calculator to feel better, challenge your self with our calculator\n What is 2+2?")
+    Calculator_answer=random_calculator(2,2)
+    print(Answer,f"is wrong our calculator says {Calculator_answer}","Have a nice day :)")
+
+    return user_items                    
+
 
 toilet_cellar = ToiletCellar("toilet", "Yes, even the cellar has a toilet.")
 
@@ -174,11 +216,13 @@ toilet_cellar = ToiletCellar("toilet", "Yes, even the cellar has a toilet.")
 
 
 table_tennis_room = TableTennisRoom("table tennis room", "A room where you can play table tennis.")
+prayer_room=Prayer_Room("Prayer room","A place where your soul can unwind and escape the noise of the world.")
 
 ALL_ROOMS = {
     "toilet_cellar": toilet_cellar,
     # Add your room key-value pairs here:
     # "my_room_key": my_room
 
-    "table_tennis_room": table_tennis_room
+    "table_tennis_room": table_tennis_room,
+    "prayer_room":prayer_room,
 }
