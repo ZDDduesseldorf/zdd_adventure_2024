@@ -151,14 +151,23 @@ class JungleGreenhouse(Room):
             player_answer = input("What is your answer?: ").lower()
             if player_answer == "machete":
                 self.riddle_status = True
-                print("Amazing! You solved the riddle. Take this")
-                print("\nadd hand machete process here\n")
+                filter_for_bool = {key: value for key, value in self.riddle_keys.items() if value[0]} # filters for bools in riddle dict
+                num_riddles_to_solve = max(filter_for_bool.items(), key=lambda item: item[1][1]) # find item with highest value (second element in the list)
+                print("Good job on sloving the riddle! Very impressive!")
             else:
                 print(f"Sadly {player_answer} isn't the right answer.")
                 print("But I'll give you a hint! The answer is the same for all riddles!")
         else:
             self.text_waiting_time(2)
             print("I'll give you a clue...\nThe answer is the same for all riddles!")
+        pass
+
+    def hand_over_item(self, user_item):
+        if self.riddle_status:
+            print("Look here kid, you see that little crevase behind the snake statue? Go ahead, inspect it!")
+            self.user_items.append(user_item)
+        else:
+            print("I'll give you a prize if you get it right!")
         pass
 
     def run_story(self, user_items):
@@ -173,9 +182,7 @@ class JungleGreenhouse(Room):
                 self.botanist_riddle(next_section)
                 self.botanist_request_answer()
                 self.text_waiting_time(2)
-            filter_for_bool = {key: value for key, value in self.riddle_keys.items() if value[0]} # filters for bools in riddle dict
-            num_riddles_to_solve = max(filter_for_bool.items(), key=lambda item: item[1][1]) # find item with highest value (second element in the list)
-            print(f"your so cool! solving the riddle on your {num_riddles_to_solve[1]}th try is impressive!")
+                self.hand_over_item(user_items)
             self.text_waiting_time(2)
         elif choice == "leave":
             print("leaving, but not immediately") # NOT FINISHED!!!!
@@ -186,15 +193,17 @@ class JungleGreenhouse(Room):
 ## ----------------------------------------------------------------
 ## List here all rooms
 
+# machete = Item("machete", "a very sharp but used machete", movable=True)
+
 toilet_cellar = ToiletCellar("toilet", "Yes, even the cellar has a toilet.") 
-jungle_greenhouse = JungleGreenhouse("greenhouse", "Of course there's a greenhouse! The architects really took advantage of the space behind the ZDD building")
+jungle_greenhouse = Room("greenhouse", "An overgrown greenhouse at the back of the building")
 
 # Add your room instance here, similar to the example below:
 # my_room = MyRoom("room_name", "room_description")
 
 ALL_ROOMS = {
     "toilet_cellar": toilet_cellar,
-    "jungle_greenhouse": jungle_greenhouse
+    "greenhouse": jungle_greenhouse
     # Add your room key-value pairs here:
     # "my_room_key": my_room
 }
