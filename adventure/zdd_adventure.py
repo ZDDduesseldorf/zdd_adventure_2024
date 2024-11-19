@@ -46,7 +46,7 @@ class ZDDAdventure:
 
         cellar.add_room("table_tennis_room", ALL_ROOMS["table_tennis_room"])
 
-
+        first_floor.add_room("library", ALL_ROOMS["library"])
         return {
             "cellar": cellar,
             "ground floor": ground_floor,
