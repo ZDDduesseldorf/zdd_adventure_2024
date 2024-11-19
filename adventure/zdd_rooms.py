@@ -17,6 +17,130 @@ class ToiletCellar(Room):
 ## ----------------------------------------------------------------
 ## List here all rooms
 
+class AtelierStudio(Room):
+
+    def inspect_paintings(self):
+        
+        """
+        Inspects the paintings in the art studio.
+        There are 3 paintings in the art studio. The player can choose which ones to inspect.
+        """
+
+        inspect_story = (
+            "You decide to inspect the paintings in the art studio and notice there are three different artworks. \n"
+            "Type 'painting1' to inspect the first painting.\n"
+            "Type 'painting2' to inspect the second painting.\n"
+            "Type 'painting3' to inspect the third painting.\n"
+            "Type 'stop' to stop looking at the paintings."
+            )
+        print(inspect_story)
+
+        while True:
+            painting_choice = input("Which painting would you like to inspect? (painting1/painting2/painting3/stop): ").lower()
+
+            if painting_choice == "painting1":
+                print("You look at the first painting and see this...")
+                print(r"""
+    %%%
+   =====
+  &%&%%%&
+  %& < <% 
+   &\__/
+    \ |____
+   .', ,  ()
+  / -.  _)| 
+ |_(_.    |
+ '-'\  )  |
+ mrf )    |
+    /  .  ).
+   /    _. |
+ /'---':.-'|
+(__.' /    /
+ \   ( /  /
+  \ /  _  | 
+   \  |  '|
+   | . \  |
+   |(     | 
+   |  \ \ |
+    \  )\ |
+   __)/ / \
+--"--(_.Ooo'----""")
+                print("This painting looks like the Venus de Milo. Why would someone who is such a good artist study data science?")
+            elif painting_choice == "painting2":
+                print("You look at the second painting and see this...")
+                print(r"""      
+                _____
+             ,-"     "-.
+            / o       o \
+           /   \     /   \
+          /     )-"-(     \
+         /     ( 6 6 )     \
+        /       \ " /       \
+       /         )=(         \
+      /   o   .--"-"--.   o   \
+     /    I  /  -   -  \  I    \
+ .--(    (_}y/\       /\y{_)    )--.
+(    ".___l\/__\_____/__\/l___,"    )
+ \                                 /
+  "-._      o O o O o O o      _,-"
+      `--Y--.___________.--Y--'
+         |==.___________.==| hjw
+         `==.___________.==' `97""")
+                print("This painting is very strange. You notice the artist left a comment in the bottom-left corner:\n")
+                print("'I saw this through the telescope in the ZDD and was never the same again...'")
+            elif painting_choice == "painting3":
+                print("You look at the third painting and see this...")
+                print(r"""      
+       _________
+      /         \
+     /           \
+    |    O   O    |
+    |      ^       |
+    |     '-'      |
+     \___________/ 
+        /       \
+       /         \
+      |           |
+      |           |
+       \_________/ """)
+                print("What the hell is this supposed to be? It looks like a child's drawing!")
+                print("You notice a small note on the bottom right corner:\n")
+                print("'I'm a data scientist, not an artist.'\n You agree.")
+            elif painting_choice == "stop":
+                break
+            else:
+                print("This painting doesn't exist. Please enter one of the choices above.")
+            
+
+    def run_story(self, user_items):
+    
+        """
+        When the player enters the room, they are presented with a story and choices to make.
+        The player can choose to inspect the paintings or leave the room.
+        """
+
+        atelier_story = (
+            "You slowly open the door and enter the room. It is an art studio!\n"
+            "Why do we even have an art studio? I thought we were a data science lab?\n"
+            "As you try to make sense of it all, you notice some canvases are already painted.\n"
+            "You wonder - should you look at the paintings or just leave?\n"
+            "Type 'look' to look at the other paintings.\n"
+            "Type 'leave' to leave the room."
+            )
+        print(atelier_story)
+
+        while True:
+            user_choice = input("What would you like to do? (look/leave): ").lower()
+
+            if user_choice == "look":
+                self.inspect_paintings()
+            elif user_choice == "leave":
+                break
+            else:
+                print("Sadly that's impossible. Please enter one of the choices above.")
+
+        
+        
 
 class TableTennisRoom(Room):
 
@@ -174,11 +298,14 @@ toilet_cellar = ToiletCellar("toilet", "Yes, even the cellar has a toilet.")
 
 
 table_tennis_room = TableTennisRoom("table tennis room", "A room where you can play table tennis.")
+atelier_studio = AtelierStudio("atelier studio", "A space full of confusion and creativity.")
+
 
 ALL_ROOMS = {
     "toilet_cellar": toilet_cellar,
     # Add your room key-value pairs here:
     # "my_room_key": my_room
 
-    "table_tennis_room": table_tennis_room
+    "table_tennis_room": table_tennis_room,
+    "atelier_studio": atelier_studio
 }
