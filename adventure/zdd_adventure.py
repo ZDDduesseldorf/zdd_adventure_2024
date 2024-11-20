@@ -44,6 +44,7 @@ class ZDDAdventure:
 
         #... Add other rooms ...
 
+        third_floor.add_room("leaky_room", ALL_ROOMS["leaky_room"])
         cellar.add_room("table_tennis_room", ALL_ROOMS["table_tennis_room"])
 
 
@@ -51,7 +52,8 @@ class ZDDAdventure:
             "cellar": cellar,
             "ground floor": ground_floor,
             "first floor": first_floor,
-            "second floor": second_floor
+            "second floor": second_floor,
+            "third floor": third_floor
         }
 
     def play(self):
