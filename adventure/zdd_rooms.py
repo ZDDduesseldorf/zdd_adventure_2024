@@ -17,6 +17,91 @@ class ToiletCellar(Room):
 ## ----------------------------------------------------------------
 ## List here all rooms
 
+class FootballStadium(Room):
+    def __init__(self, name, description):
+        # Konstruktor des Football Stadium, ruft den Konstruktor der übergeordneten Klasse Room auf
+        super().__init__(name=name, description=description)
+        # Initialisiert die Gegenstände, die im Raum verfügbar sind
+        self.items = [
+            Stadionwurst()  # Fügt eine Stadionwurst als Item hinzu
+        ]
+
+    def simulate_game(self):
+        """
+        Simuliert ein Fußballspiel zwischen HHU und HSD.
+        Generiert zufällige Punktzahlen und gibt das Ergebnis aus.
+        """
+        print("The game between HHU and HSD begins!")
+        # Generiere zufällige Punktzahlen für beide Teams
+        hhu_score = random.randint(0, 5)
+        hsd_score = random.randint(0, 5)
+
+        # Zeige das Ergebnis des Spiels an
+        print(f"The final score is:\nHHU {hhu_score} - {hsd_score} HSD")
+        if hhu_score > hsd_score:
+            print("HHU wins the match!")
+        elif hhu_score < hsd_score:
+            print("HSD wins the match!")
+        else:
+            print("It's a draw!")  # Falls die Punktzahlen gleich sind
+
+    def run_story(self, user_items):
+        """
+        Führt die Hauptinteraktion im Raum durch.
+        Spieler können Gegenstände inspizieren, ein Spiel ansehen oder den Raum verlassen.
+        """
+        if user_items is None:  # Sicherstellen, dass user_items eine gültige Liste ist
+            user_items = []
+
+        print("Welcome to the Football Stadium!")
+        print("You can:")
+        print("1. Inspect the stadium to find items.")
+        print("2. Watch the game between HHU and HSD.")
+        
+        while True:
+            # Spieler wählt eine Aktion
+            choice = input("What would you like to do? (inspect/watch/leave): ")
+            if choice == "inspect":
+                # Spieler entscheidet sich, den Raum zu inspizieren
+                print("You look around the stadium and discover:")
+                for item in self.items:
+                    print(f"- {item.name}: {item.description}")
+                    # Prüft, ob das Item bereits im Inventar ist
+                    if any(existing_item.name == item.name for existing_item in user_items):
+                        print(f"You already have the {item.name} in your inventory.")
+                    else:
+                        # Fragt den Spieler, ob er das Item nehmen möchte
+                        take_item = input(f"Do you want to take {item.name}? (yes/no): ")
+                        if take_item.lower() == "yes" and item.movable:
+                            user_items.append(item)  # Fügt das Item ins Inventar hinzu
+                            print(f"You took the {item.name}.")
+                        elif take_item.lower() == "no":
+                            print(f"You left the {item.name}.")
+                        else:
+                            print("Invalid choice. Please try again.")
+            elif choice == "watch":
+                # Spieler schaut sich ein Fußballspiel an
+                self.simulate_game()
+            elif choice == "leave":
+                # Spieler verlässt den Raum
+                print("You leave the stadium.")
+                break
+            else:
+                # Ungültige Eingabe
+                print("Invalid choice. Please try again.")
+
+
+class Stadionwurst(Item):
+    def __init__(self):
+        """
+        Konstruktor für das Stadionwurst-Item.
+        Initialisiert die Eigenschaften des Items, einschließlich Name, Beschreibung und Beweglichkeit.
+        """
+        super().__init__(
+            name="stadionwurst",  # Name des Items
+            description="A delicious sausage that restores your energy.",  # Beschreibung
+            movable=True  # Das Item ist beweglich und kann ins Inventar aufgenommen werden
+        )
 
 class TableTennisRoom(Room):
 
@@ -174,11 +259,15 @@ toilet_cellar = ToiletCellar("toilet", "Yes, even the cellar has a toilet.")
 
 
 table_tennis_room = TableTennisRoom("table tennis room", "A room where you can play table tennis.")
+football_stadium = FootballStadium("football stadium", "A massive football stadium with a capacity of 54,600.")
+
 
 ALL_ROOMS = {
     "toilet_cellar": toilet_cellar,
     # Add your room key-value pairs here:
     # "my_room_key": my_room
 
-    "table_tennis_room": table_tennis_room
+    "table_tennis_room": table_tennis_room,
+    "football_stadium": football_stadium
+
 }
