@@ -179,12 +179,15 @@ table_tennis_room = TableTennisRoom("table tennis room", "A room where you can p
 class DarkAcademiaRoom(Room):
     def __init__(self, name, description):
         super().__init__(name, description)
-        self.notebook = ["digital", "computer", "science", "machine", "learning", "data", "artificial", "modern"]
-        
+        self.notebook_item = Item("notebook", "A tattered notebook filled with cryptic words and phrases.", movable=True)  # notebook as an Item
         """
-        Initialize the DarkAcademiaRoom with a name, description, and a list of words 
-        for the text challenge.
+        Initialize the DarkAcademiaRoom with a name, description, and an Item for the notebook.
         """
+
+    def enter_room(self, user_items, command_handler):
+        print("You enter the Dark Academia Room.")
+        self.start_adventure(user_items)
+
 
     def get_correct_sentence(self):
         """
@@ -193,18 +196,18 @@ class DarkAcademiaRoom(Room):
         """
         return "The digital revolution has transformed computer and science fields with artificial intelligence."
 
-    def start_adventure(self):
+    def start(self):
         """
         Starts the adventure by greeting the player and asking them to solve a math question
         to unlock the notebook. After the math question is answered correctly, the player can 
         choose to solve the text challenge or not.
         """
-        print("Welcome to the Dark Academia Room!")
+        print("Welcome to the Dark Academia Room at ZDD!")
         print("Answer a math question correctly to access the secret tattered notebook.")
         
-        if self.ask_math_question():
+        if self.question():
             print("\nCorrect! You now have access to the notebook.")
-            print("Do you want to solve the text challenge? (yes/no)")
+            print("Do you want to discover the ZDD's secrets? (yes/no)")
             if input().lower() == "yes":
                 self.text_challenge()
             else:
@@ -212,7 +215,7 @@ class DarkAcademiaRoom(Room):
         else:
             print("Wrong answer. Access denied. Goodbye!")
 
-    def ask_math_question(self):
+    def question(self):
         """
         Asks the player a simple math question (addition of two random numbers between 1 and 10).
         If the player answers correctly, the function returns True. Otherwise, it returns False.
@@ -242,14 +245,14 @@ class DarkAcademiaRoom(Room):
         print(completed_text)
         
         if completed_text == self.get_correct_sentence():
-            print("\nGreat job! You completed the text and unlocked the ZDD's secrets.")
+            print("\n Well done! You completed the text and unlocked the ZDD's secrets.")
         else:
-            print("\nText completed, but it didn't match the expected sentence. Keep trying!")
+            print("\n Unfortunately, the text is incorrect. Access denied. The secrets remain hidden.")
 
     def fill_blanks(self, text, words):
         """
-        Fills in the blanks in the text using the words provided. The player chooses a word 
-        for each blank from the available list. The function keeps track of the words used 
+        Fills in the blanks in the text using the words provided. The player chooses a word
+        for each blank from the notebook. The function keeps track of the words used 
         and updates the text until all blanks are filled.
         """
         gaps = text.count("__")
@@ -267,7 +270,7 @@ class DarkAcademiaRoom(Room):
 
 toilet_cellar = ToiletCellar("toilet", "Yes, even the cellar has a toilet.")
 
-dark_academia_room = DarkAcademiaRoom("dark_academia_room", "It's a dark room with a lot of books and a computer")
+dark_academia_room = DarkAcademiaRoom("dark_academia_room", "It's a dark room with a lot of books and a computer!")
 
 ALL_ROOMS = {
         "toilet_cellar": toilet_cellar,
