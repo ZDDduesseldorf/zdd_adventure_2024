@@ -165,20 +165,59 @@ class TableTennisRoom(Room):
             else:
                 print("Invalid choice. Please try again.")
 
+
+
+class ChamberOfSecrets(Room):
+    def __init__(self, name, description, sword_item):
+        super().__init__(name, description, items=[sword_item])
+        self.sword_taken = False
+
+    def run_story(self, user_items):
+        print("\nYou step into the Chamber of Secrets. The air is heavy, and the walls are lined with ancient carvings.")
+        print("In the center of the room, a platform glows faintly, and atop it lies a sword, shimmering with a magical aura.")
+
+        if self.sword_taken:
+            print("\nThe platform is empty, you have already taken the Sword of Gryffindor.")
+        else:
+            print("\nThe Sword of Gryffindor rests on the platform. It gleams, as if alive.")
+            while True:
+                action = input("What do you want to do? (inspect / take / leave): ").lower()
+                if action == "inspect":
+                    print("\nYou approach the platform and see runes engraved on the sword.")
+                    print("The runes say: 'Only those who are worthy may wield the power to defeat Python Errors and Infinity Loops.'")
+                elif action == "take":
+                    sword = self.items[0]
+                    user_items.append(sword)
+                    self.items.remove(sword)
+                    self.sword_taken = True
+                    print("As you feel the hilt of the Sword of Gryffindor, a surge of energy flows through you.")
+                    print("You feel ready to conquer any challenge that comes your way.")
+                    break
+                elif action == "leave":
+                    print("\nYou decide to leave the sword where it is, for now.")
+                    break
+                else:
+                    print("\nInvalid action. Please choose 'inspect', 'take', or 'leave'.")
+        return user_items
+
+
+sword_of_gryffindor = Item(
+    "Sword of Gryffindor",
+    "A legendary sword that can defeat Python Errors and break Infinity Loops.",
+    movable=True
+)
+
+
                     
 
 toilet_cellar = ToiletCellar("toilet", "Yes, even the cellar has a toilet.")
 
-# Add your room instance here, similar to the example below:
-# my_room = MyRoom("room_name", "room_description")
-
+chamber_of_secrets = ChamberOfSecrets("Chamber of Secrets", "An ancient, mysterious room hidden beneath the castle.")
 
 table_tennis_room = TableTennisRoom("table tennis room", "A room where you can play table tennis.")
 
 ALL_ROOMS = {
     "toilet_cellar": toilet_cellar,
-    # Add your room key-value pairs here:
-    # "my_room_key": my_room
-
+    "chamber_of_secrets": chamber_of_secrets,
     "table_tennis_room": table_tennis_room
 }
