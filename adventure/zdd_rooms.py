@@ -110,6 +110,82 @@ class AtelierStudio(Room):
                 break
             else:
                 print("This painting doesn't exist. Please enter one of the choices above.")
+
+    def paint_something(self, user_items):
+        """
+        Paints a picture in the art studio.
+
+        The player can choose to paint a picture of a computer, a cat, or a person.
+        If the player chooses to paint a picture the function will add the painting to the inventory.
+        """
+        paint_something_story = ("You suddenly feel the urge to be creative. Maybe you were meant to be an artist all along."
+                                 "Type computer to paint a computer.\n"
+                                 "Type cat to paint a cat.\n"
+                                 "Type person to paint a person.\n"
+                                 "Type stop to stop painting."
+                                 )
+        print(paint_something_story)
+
+        while True:
+            painting_choice = input("What are you goint to paint? (computer/cat/person/stop): ").lower()
+
+            if painting_choice == "computer":
+                print("Like a real data scientist you decide to paint a computer.")
+                print("These are the fruits of your creativity:")
+                print(r"""   
+   _______________                        |*\_/*|________
+  |  ___________  |     .-.     .-.      ||_/-\_|______  |
+  | |           | |    .****. .****.     | |           | |
+  | |   0   0   | |    .*****.*****.     | |   0   0   | |
+  | |     -     | |     .*********.      | |     -     | |
+  | |   \___/   | |      .*******.       | |   \___/   | |
+  | |___     ___| |       .*****.        | |___________| |
+  |_____|\_/|_____|        .***.         |_______________|
+    _|__|/ \|_|_.............*.............._|________|_
+   / ********** \                          / ********** \
+ /  ************  \                      /  ************  \
+--------------------                    --------------------""")
+                print("You are suprised by your sudden romanticism. But your are happy with the result.")
+                computer_painting = Item("computer painting", "a painting of two computers", movable=True)
+                user_items.append(computer_painting)
+
+            elif painting_choice == "cat":
+                print("You decide to paint a cat. Not very creative but you are a data scientist not an artist.")
+                print("These are the fruits of your creativity:")
+                print(r"""       
+                        _
+                       | \
+                       | |
+                       | |
+  |\                   | |
+ /, ~\                / /
+X     `-.....-------./ /
+ ~-. ~  ~              |
+    \             /    |
+     \  /_     ___\   /
+     | /\ ~~~~~   \ |
+     | | \        || |
+     | |\ \       || )
+    (_/ (_/      ((_/""")
+                print("You painted a cat! It looks great!")
+                cat_painting = Item("cat painting", "a painting of a cat", movable=True)
+                user_items.append(cat_painting)
+
+            elif painting_choice == "person":
+                print("You decide to go all out and paint a whole person. It seems like you are feeling very creative today.")
+                print("These are the fruits of your creativity:")
+                print(r"""       
+                      O
+                     /|\
+                     / \ """)
+                print("Now this is really embarassing! You should stick to data science. You also don't want to keep this painting.")
+                print("You throw the painting in the trash before anyone can see it.")
+            elif painting_choice == "stop":
+                break
+            else:
+                print("Invalid choice. Please try again.")
+
+        return user_items
             
 
     def run_story(self, user_items):
@@ -125,15 +201,18 @@ class AtelierStudio(Room):
             "As you try to make sense of it all, you notice some canvases are already painted.\n"
             "You wonder - should you look at the paintings or just leave?\n"
             "Type 'look' to look at the other paintings.\n"
+            "Type 'paint' to paint something."
             "Type 'leave' to leave the room."
             )
         print(atelier_story)
 
         while True:
-            user_choice = input("What would you like to do? (look/leave): ").lower()
+            user_choice = input("What would you like to do? (look/paint/leave): ").lower()
 
             if user_choice == "look":
                 self.inspect_paintings()
+            elif user_choice == "paint":
+                self.paint_something(user_items)
             elif user_choice == "leave":
                 break
             else:
