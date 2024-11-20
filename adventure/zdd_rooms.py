@@ -18,6 +18,19 @@ class ToiletCellar(Room):
 ## List here all rooms
 
 
+class ShinyAmulet(Item):
+    """ A shiny amulet found in the Leaky Room.
+        When present in the inventory while meeting the octopus, the game against it can be skipped.
+    """
+    def __init__(self):
+        super().__init__(
+            name="shiny amulet",
+            description="A silver amulet, which looks shiny despite being in the saltwater for who knows how long.",
+            movable=True
+        )
+   
+
+
 class TableTennisRoom(Room):
 
     training_score = 0
@@ -165,20 +178,20 @@ class TableTennisRoom(Room):
             else:
                 print("Invalid choice. Please try again.")
 
-                    
-
-toilet_cellar = ToiletCellar("toilet", "Yes, even the cellar has a toilet.")
 
 # Add your room instance here, similar to the example below:
 # my_room = MyRoom("room_name", "room_description")
 
+toilet_cellar = ToiletCellar("toilet", "Yes, even the cellar has a toilet.")
 
 table_tennis_room = TableTennisRoom("table tennis room", "A room where you can play table tennis.")
 
+
 ALL_ROOMS = {
-    "toilet_cellar": toilet_cellar,
     # Add your room key-value pairs here:
     # "my_room_key": my_room
+    "toilet_cellar": toilet_cellar,
 
     "table_tennis_room": table_tennis_room
 }
+
