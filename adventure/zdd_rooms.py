@@ -173,24 +173,24 @@ class ChamberOfSecrets(Room):
         self.sword_taken = False
 
     def run_story(self, user_items):
-        print("\nYou step into the Chamber of Secrets. The air is damp and heavy, and the walls are lined with ancient carvings.")
-        print("In the center of the room, a platform glows faintly, and atop it lies a magnificent sword, shimmering with a magical aura.")
+        print("\nYou step into the Chamber of Secrets. The air is heavy, and the walls are lined with ancient carvings.")
+        print("In the center of the room, a platform glows faintly, and atop it lies a sword, shimmering with a magical aura.")
 
         if self.sword_taken:
-            print("\nThe platform is empty, as you have already taken the Sword of Gryffindor.")
+            print("\nThe platform is empty, you have already taken the Sword of Gryffindor.")
         else:
-            print("\nThe Sword of Gryffindor rests on the platform. Its blade gleams, as if alive.")
+            print("\nThe Sword of Gryffindor rests on the platform. It gleams, as if alive.")
             while True:
                 action = input("What do you want to do? (inspect / take / leave): ").lower()
                 if action == "inspect":
                     print("\nYou approach the platform and see runes engraved on the sword.")
-                    print("The runes say: 'Only those who are worthy may wield the power to defeat Python Errors and break Infinity Loops.'")
+                    print("The runes say: 'Only those who are worthy may wield the power to defeat Python Errors and Infinity Loops.'")
                 elif action == "take":
                     sword = self.items[0]
                     user_items.append(sword)
                     self.items.remove(sword)
                     self.sword_taken = True
-                    print("\nAs you grasp the hilt of the Sword of Gryffindor, a surge of energy flows through you.")
+                    print("As you feel the hilt of the Sword of Gryffindor, a surge of energy flows through you.")
                     print("You feel ready to conquer any challenge that comes your way.")
                     break
                 elif action == "leave":
