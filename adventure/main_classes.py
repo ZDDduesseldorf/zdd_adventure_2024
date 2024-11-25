@@ -13,7 +13,6 @@ Classes:
     - Floor: Organizes rooms and their interconnections on a specific level of the game environment.
 """
 
-
 class CommandHandler:
     """Handles global commands like 'exit' and 'inventory'."""
     def __init__(self, game):
@@ -29,40 +28,6 @@ class CommandHandler:
             else:
                 print("You have the following items:")
                 print(", ".join([x.name.upper() for x in self.game.items]))
-
-
-class Item:
-    """Represents a game item with attributes like name, description, and movability."""
-    def __init__(self, name, description, movable=False):
-        """Construct a new Item
-        
-        Parameters
-        ----------
-        name : str
-            Name of the item
-        description : str
-            Description of the item.
-        movable : bool
-            Determines whether the item is movable, i.e., whether it can be added to the inventory.
-            Defaults to False.
-        """
-        self.name = name
-        self.description = description
-        self.movable = movable
-
-    def describe(self):
-        print(self.description)
-
-    def is_movable(self, user_items, other_item_required=None):
-        """Returns True if item can be added to the inventory."""
-        if not self.movable:
-            return False
-        if not other_item_required:
-            return True
-        if other_item_required and other_item_required in user_items:
-            return True
-        return False
-
 
 class Room:
     """Represents a game room with attributes and methods for room interaction."""
@@ -112,10 +77,41 @@ class Room:
                 print("Invalid command!")
 
     def run_story(self, user_items):
-        """Customizable method where students can add functionality."""
+        """Customizable method where you can add functionality."""
         print(f"You've entered the {self.name} {self.visited} times.")
-        # By default, this method doesn't do much, but students can enhance this method in their custom rooms.
-
+        # In the Puzzle Room, solve a puzzle to reveal the Krypton Key
+        if self.name.lower() == "puzzle room":
+            print("You see strange symbols and objects scattered around the room.")
+            print("On a stone table in the center, there's a glowing scroll with a riddle.")
+            
+            # Present a puzzle to the player
+            puzzle = {
+                "question": "I am not alive, but I grow. I have no lungs, but I need air. What am I?",
+                "options": ["A) Fire", "B) Water", "C) Sand"],
+                "answer": "A"
+            }
+            print("\nPuzzle:")
+            print(puzzle["question"])
+            print("Options:")
+            for option in puzzle["options"]:
+                print(option)
+            
+            attempts = 3
+            while attempts > 0:
+                player_answer = input("Enter your answer (A, B, or C): ").strip().upper()
+                if player_answer == puzzle["answer"]:
+                    print("\nThe scroll glows brighter, and a hidden compartment in the wall opens!")
+                    print("You found the Krypton Key!")
+                    # Add the Krypton Key item to the room
+                    krypton_key = Item("Krypton Key", "A glowing mysterious key.", movable=True)
+                    self.items.append(krypton_key)
+                    break
+                else:
+                    attempts -= 1
+                    if attempts > 0:
+                        print(f"Wrong answer! You have {attempts} attempts left.")
+                    else:
+                        print("You failed to solve the puzzle. The compartment remains closed.")
         return user_items
 
     def show_items(self, user_items):
@@ -144,6 +140,38 @@ class Room:
     def get_detail(self):
         return f"You are in the {self.name}. {self.description}"
 
+
+class Item:
+    """Represents a game item with attributes like name, description, and movability."""
+    def __init__(self, name, description, movable=False):
+        """Construct a new Item
+        
+        Parameters
+        ----------
+        name : str
+            Name of the item
+        description : str
+            Description of the item.
+        movable : bool
+            Determines whether the item is movable, i.e., whether it can be added to the inventory.
+            Defaults to False.
+        """
+        self.name = name
+        self.description = description
+        self.movable = movable
+
+    def describe(self):
+        print(f"{self.name}: {self.description}")
+
+    def is_movable(self, user_items, other_item_required=None):
+        """Returns True if item can be added to the inventory."""
+        if not self.movable:
+            return False
+        if not other_item_required:
+            return True
+        if other_item_required and other_item_required in user_items:
+            return True
+        return False
 
 class Floor:
     """Represents a game floor containing rooms and connections to other floors."""

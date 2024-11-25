@@ -167,18 +167,55 @@ class TableTennisRoom(Room):
 
                     
 
+class PuzzleRoom(Room):
+    def run_story(self, user_items):
+        """
+        In this room, the player solves a puzzle to unlock a hidden item.
+        If the player solves the puzzle, they receive the Krypton Key.
+        """
+        print("Welcome to the mysterious Puzzle Room.")
+        print("Strange symbols glow faintly on the walls, and a glowing scroll lies on a stone table.")
+
+        puzzle = {
+            "question": "I am not alive, but I grow. I have no lungs, but I need air. What am I?",
+            "options": ["A) Fire", "B) Water", "C) Sand"],
+            "answer": "A"
+        }
+        
+        print("\nPuzzle:")
+        print(puzzle["question"])
+        print("Options:")
+        for option in puzzle["options"]:
+            print(option)
+
+        attempts = 3
+        while attempts > 0:
+            player_answer = input("Enter your answer (A, B, or C): ").strip().upper()
+            if player_answer == puzzle["answer"]:
+                print("\nThe symbols brighten, and a hidden compartment in the wall slides open!")
+                print("Inside, you find a Krypton Key!")
+                # Add the Krypton Key to the room's items
+                krypton_key = Item("Krypton Key", "A glowing mysterious key.", movable=True)
+                self.items.append(krypton_key)
+                break
+            else:
+                attempts -= 1
+                if attempts > 0:
+                    print(f"Incorrect! You have {attempts} attempts left.")
+                else:
+                    print("You failed to solve the puzzle. The symbols fade, and the compartment remains locked.")
+
+        return user_items
+
+
 toilet_cellar = ToiletCellar("toilet", "Yes, even the cellar has a toilet.")
-
-# Add your room instance here, similar to the example below:
-# my_room = MyRoom("room_name", "room_description")
-
-
 table_tennis_room = TableTennisRoom("table tennis room", "A room where you can play table tennis.")
+puzzle_room = PuzzleRoom("puzzle room", "A mysterious room filled with puzzles.")
 
 ALL_ROOMS = {
     "toilet_cellar": toilet_cellar,
-    # Add your room key-value pairs here:
-    # "my_room_key": my_room
-
-    "table_tennis_room": table_tennis_room
+    "table_tennis_room": table_tennis_room,
+    "puzzle_room": puzzle_room  # Adding the new Puzzle Room here
 }
+
+

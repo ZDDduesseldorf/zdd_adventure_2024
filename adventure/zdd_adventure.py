@@ -20,7 +20,6 @@ class ZDDAdventure:
         first_floor = Floor("first floor", "There are many doors. Study rooms, offices, and labs.")
         second_floor = Floor("second floor", "This floor hosts the professors' offices and some research labs.")
         third_floor = Floor("third floor", "This is the topmost floor with the lecture hall and meeting rooms. You have heard about a roof terrace, but that might just be stories...")
-        # roof_floor = Floor("roof", "You really shouldn't be here!!!")
 
         # Connect floors
         cellar.add_connection("up", ground_floor)
@@ -42,25 +41,27 @@ class ZDDAdventure:
         reception = Room("reception", "You see a welcoming desk and a receptionist.")
         ground_floor.add_room("reception", reception)
 
-        #... Add other rooms ...
-
+        # Add the table tennis room to the cellar
         cellar.add_room("table_tennis_room", ALL_ROOMS["table_tennis_room"])
 
+        # Add the Puzzle Room to the cellar
+        cellar.add_room("puzzle_room", ALL_ROOMS["puzzle_room"])
 
         return {
             "cellar": cellar,
             "ground floor": ground_floor,
             "first floor": first_floor,
-            "second floor": second_floor
+            "second floor": second_floor,
+            "third floor": third_floor
         }
 
     def play(self):
         introduction = (
-        "... slowly ... you .... wake ... up ...\n"
-        "You are in a huge room with very little light...\n"
-        "Wait! \nThat's the 'Data Science and AI lab' in the cellar of the ZDD!\n"
-        "Adrenaline kicks in.\nYou look around.\nWhat is going on?\nWhere is everyone else?\n"
-        "You quickly leave the room. But there's no one on the hallway either."
+            "... slowly ... you .... wake ... up ...\n"
+            "You are in a huge room with very little light...\n"
+            "Wait! \nThat's the 'Data Science and AI lab' in the cellar of the ZDD!\n"
+            "Adrenaline kicks in.\nYou look around.\nWhat is going on?\nWhere is everyone else?\n"
+            "You quickly leave the room. But there's no one on the hallway either."
         )
         print(introduction)
         while self.game_active:
