@@ -175,10 +175,111 @@ toilet_cellar = ToiletCellar("toilet", "Yes, even the cellar has a toilet.")
 
 table_tennis_room = TableTennisRoom("table tennis room", "A room where you can play table tennis.")
 
+
+class DarkAcademiaRoom(Room):
+    def __init__(self, name, description):
+        super().__init__(name, description)
+        self.notebook_item = Item(
+            "notebook",
+            "A tattered notebook filled with cryptic words and phrases.",
+            movable=True
+        )
+        self.notebook_words = ["digital", "computer", "science", "machine", "learning", "data", "artificial", "modern"]
+
+    def enter_room(self, user_items, command_handler=None):
+        """
+        Called when the player enters the room. Starts the adventure.
+        """
+        print(f"You enter the {self.name}. {self.description}")
+        self.start(user_items)
+
+    def get_correct_sentence(self):
+        """
+        The correct sentence for the text challenge.
+        """
+        return "The digital revolution has transformed computer and science fields with artificial intelligence."
+
+    def start(self, user_items):
+        """
+        Begins the adventure. The player must answer a math question correctly to unlock the notebook.
+        """
+        print("Welcome to the Dark Academia Room!")
+        print("Answer a math question correctly to access the secret tattered notebook.")
+
+        if self.question():
+            print("\nCorrect! You now have access to the notebook.")
+            user_items.append(self.notebook_item)  # Add the notebook to the player's inventory.
+            print("The notebook has been added to your inventory.")
+            print("Do you want to discover the secrets of ZDD? (yes/no)")
+            if input().lower() == "yes":
+                self.text_challenge(user_items)
+            else:
+                print("Maybe next time. Goodbye!")
+        else:
+            print("Wrong answer. Access denied. Goodbye!")
+
+    def question(self):
+        """
+        Asks a math question. Returns True if the answer is correct, otherwise False.
+        """
+        num1 = random.randint(1, 10)
+        num2 = random.randint(1, 10)
+        correct_answer = num1 + num2
+        print(f"What is {num1} + {num2}?")
+
+        try:
+            user_answer = int(input("Your answer: "))
+            return user_answer == correct_answer
+        except ValueError:
+            print("Invalid input.")
+            return False
+
+    def text_challenge(self, user_items):
+        """
+        Provides a text challenge if the player has the notebook. The player fills in the blanks using notebook words.
+        """
+        if self.notebook_item not in user_items:
+            print("You don't have the notebook to attempt this challenge.")
+            return
+
+        print("\nFill in the blanks in the following text:")
+        text = "The __ revolution has transformed __ and __ fields with __ intelligence."
+        completed_text = self.fill_blanks(text, self.notebook_words[:])
+        print("\nYour completed text:")
+        print(completed_text)
+
+        if completed_text == self.get_correct_sentence():
+            print("\nWell done! You completed the text and unlocked the ZDD's secrets.")
+        else:
+            print("\nUnfortunately, the text is incorrect. The secrets remain hidden.")
+
+    def fill_blanks(self, text, words):
+        """
+        Fills in the blanks in the given text using words from the notebook.
+        """
+        gaps = text.count("__")
+        print(text)
+        for i in range(gaps):
+            print(f"\nChoose from: {', '.join(words)}")
+            user_word = input(f"Fill gap {i + 1}: ").strip()
+            while user_word not in words:
+                user_word = input("Invalid word. Choose from the list: ").strip()
+            text = text.replace("__", user_word, 1)
+            words.remove(user_word)
+            print(f"Updated text: {text}")
+        return text
+
+
+class ToiletCellar(Room):
+    def __init__(self, name, description):
+        super().__init__(name, description)
+
+
+toilet_cellar = ToiletCellar("toilet", "Yes, even the cellar has a toilet.")
+dark_academia_room = DarkAcademiaRoom("dark_academia_room", "It's a dark room with a lot of books and a computer!")
+
 ALL_ROOMS = {
     "toilet_cellar": toilet_cellar,
-    # Add your room key-value pairs here:
-    # "my_room_key": my_room
-
+    "dark_academia_room": dark_academia_room,
     "table_tennis_room": table_tennis_room
 }
