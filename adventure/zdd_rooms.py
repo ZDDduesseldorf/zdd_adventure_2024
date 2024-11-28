@@ -179,37 +179,40 @@ table_tennis_room = TableTennisRoom("table tennis room", "A room where you can p
 class DarkAcademiaRoom(Room):
     def __init__(self, name, description):
         super().__init__(name, description)
-        self.notebook_item = Item("notebook", "A tattered notebook filled with cryptic words and phrases.", movable=True)  # notebook as an Item
-        """
-        Initialize the DarkAcademiaRoom with a name, description, and an Item for the notebook.
-        """
+        self.notebook_item = Item(
+            "notebook",
+            "A tattered notebook filled with cryptic words and phrases.",
+            movable=True
+        )
+        self.notebook_words = ["digital", "computer", "science", "machine", "learning", "data", "artificial", "modern"]
 
-    def enter_room(self, user_items, command_handler):
-        print("You enter the Dark Academia Room.")
-        self.start_adventure(user_items)
-
+    def enter_room(self, user_items, command_handler=None):
+        """
+        Called when the player enters the room. Starts the adventure.
+        """
+        print(f"You enter the {self.name}. {self.description}")
+        self.start(user_items)
 
     def get_correct_sentence(self):
         """
-        Returns the correct sentence that the player needs to match by filling in the blanks.
-        This sentence is used for comparison after the player completes the text challenge.
+        The correct sentence for the text challenge.
         """
         return "The digital revolution has transformed computer and science fields with artificial intelligence."
 
-    def start(self):
+    def start(self, user_items):
         """
-        Starts the adventure by greeting the player and asking them to solve a math question
-        to unlock the notebook. After the math question is answered correctly, the player can 
-        choose to solve the text challenge or not.
+        Begins the adventure. The player must answer a math question correctly to unlock the notebook.
         """
-        print("Welcome to the Dark Academia Room at ZDD!")
+        print("Welcome to the Dark Academia Room!")
         print("Answer a math question correctly to access the secret tattered notebook.")
-        
+
         if self.question():
             print("\nCorrect! You now have access to the notebook.")
-            print("Do you want to discover the ZDD's secrets? (yes/no)")
+            user_items.append(self.notebook_item)  # Add the notebook to the player's inventory.
+            print("The notebook has been added to your inventory.")
+            print("Do you want to discover the secrets of ZDD? (yes/no)")
             if input().lower() == "yes":
-                self.text_challenge()
+                self.text_challenge(user_items)
             else:
                 print("Maybe next time. Goodbye!")
         else:
@@ -217,14 +220,13 @@ class DarkAcademiaRoom(Room):
 
     def question(self):
         """
-        Asks the player a simple math question (addition of two random numbers between 1 and 10).
-        If the player answers correctly, the function returns True. Otherwise, it returns False.
+        Asks a math question. Returns True if the answer is correct, otherwise False.
         """
         num1 = random.randint(1, 10)
         num2 = random.randint(1, 10)
         correct_answer = num1 + num2
         print(f"What is {num1} + {num2}?")
-        
+
         try:
             user_answer = int(input("Your answer: "))
             return user_answer == correct_answer
@@ -232,30 +234,31 @@ class DarkAcademiaRoom(Room):
             print("Invalid input.")
             return False
 
-    def text_challenge(self):
+    def text_challenge(self, user_items):
         """
-        Presents the player with a text challenge where they need to fill in the blanks 
-        with words from the notebook. After filling in the blanks, the text is checked 
-        against the correct sentence.
+        Provides a text challenge if the player has the notebook. The player fills in the blanks using notebook words.
         """
+        if self.notebook_item not in user_items:
+            print("You don't have the notebook to attempt this challenge.")
+            return
+
+        print("\nFill in the blanks in the following text:")
         text = "The __ revolution has transformed __ and __ fields with __ intelligence."
-        print(f"\nFill in the blanks:\n{text}")
-        completed_text = self.fill_blanks(text, self.notebook)
+        completed_text = self.fill_blanks(text, self.notebook_words[:])
         print("\nYour completed text:")
         print(completed_text)
-        
+
         if completed_text == self.get_correct_sentence():
-            print("\n Well done! You completed the text and unlocked the ZDD's secrets.")
+            print("\nWell done! You completed the text and unlocked the ZDD's secrets.")
         else:
-            print("\n Unfortunately, the text is incorrect. Access denied. The secrets remain hidden.")
+            print("\nUnfortunately, the text is incorrect. The secrets remain hidden.")
 
     def fill_blanks(self, text, words):
         """
-        Fills in the blanks in the text using the words provided. The player chooses a word
-        for each blank from the notebook. The function keeps track of the words used 
-        and updates the text until all blanks are filled.
+        Fills in the blanks in the given text using words from the notebook.
         """
         gaps = text.count("__")
+        print(text)
         for i in range(gaps):
             print(f"\nChoose from: {', '.join(words)}")
             user_word = input(f"Fill gap {i + 1}: ").strip()
@@ -267,12 +270,16 @@ class DarkAcademiaRoom(Room):
         return text
 
 
+class ToiletCellar(Room):
+    def __init__(self, name, description):
+        super().__init__(name, description)
+
 
 toilet_cellar = ToiletCellar("toilet", "Yes, even the cellar has a toilet.")
-
 dark_academia_room = DarkAcademiaRoom("dark_academia_room", "It's a dark room with a lot of books and a computer!")
 
 ALL_ROOMS = {
-        "toilet_cellar": toilet_cellar,
-        "dark_academia_room": dark_academia_room
+    "toilet_cellar": toilet_cellar,
+    "dark_academia_room": dark_academia_room,
+    "table_tennis_room": table_tennis_room
 }
